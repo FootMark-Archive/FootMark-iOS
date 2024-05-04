@@ -54,6 +54,11 @@
 		9E38716C2BAC1BCD007451F8 /* UIColor++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3871542BAC1BCC007451F8 /* UIColor++.swift */; };
 		9E3871712BAC1BCD007451F8 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E38715A2BAC1BCC007451F8 /* BaseNavigationController.swift */; };
 		9E3871742BAC1BCD007451F8 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E38715E2BAC1BCC007451F8 /* Image.swift */; };
+		C10E2A742BE20293002321B1 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10E2A732BE20293002321B1 /* SidebarView.swift */; };
+		C10E2A762BE2029C002321B1 /* SidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10E2A752BE2029C002321B1 /* SidebarViewController.swift */; };
+		C10E2A782BE202A7002321B1 /* MainContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10E2A772BE202A7002321B1 /* MainContentViewController.swift */; };
+		C10E2A7D2BE2095F002321B1 /* SidebarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10E2A7C2BE2095F002321B1 /* SidebarModel.swift */; };
+		C10E2A802BE20BFF002321B1 /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = C10E2A7F2BE20BFF002321B1 /* LookinServer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +127,10 @@
 		9E3871542BAC1BCC007451F8 /* UIColor++.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor++.swift"; sourceTree = "<group>"; };
 		9E38715A2BAC1BCC007451F8 /* BaseNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		9E38715E2BAC1BCC007451F8 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		C10E2A732BE20293002321B1 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		C10E2A752BE2029C002321B1 /* SidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewController.swift; sourceTree = "<group>"; };
+		C10E2A772BE202A7002321B1 /* MainContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentViewController.swift; sourceTree = "<group>"; };
+		C10E2A7C2BE2095F002321B1 /* SidebarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +141,7 @@
 				9E23C4B62BACA2C800BB7D18 /* Alamofire in Frameworks */,
 				9E23C4BC2BACA30200BB7D18 /* Then in Frameworks */,
 				9E23C4B92BACA2F600BB7D18 /* SnapKit in Frameworks */,
+				C10E2A802BE20BFF002321B1 /* LookinServer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +281,7 @@
 		9E3870682BAC1A02007451F8 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				C10E2A702BE2027D002321B1 /* Sidebar */,
 				9E3871792BAC1C86007451F8 /* Main */,
 				9E3870D22BAC1A02007451F8 /* Base */,
 			);
@@ -422,6 +433,41 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		C10E2A702BE2027D002321B1 /* Sidebar */ = {
+			isa = PBXGroup;
+			children = (
+				C10E2A7B2BE20951002321B1 /* Model */,
+				C10E2A722BE20288002321B1 /* ViewController */,
+				C10E2A712BE20283002321B1 /* View */,
+			);
+			path = Sidebar;
+			sourceTree = "<group>";
+		};
+		C10E2A712BE20283002321B1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C10E2A732BE20293002321B1 /* SidebarView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C10E2A722BE20288002321B1 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C10E2A752BE2029C002321B1 /* SidebarViewController.swift */,
+				C10E2A772BE202A7002321B1 /* MainContentViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		C10E2A7B2BE20951002321B1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C10E2A7C2BE2095F002321B1 /* SidebarModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -442,6 +488,7 @@
 				9E23C4B52BACA2C800BB7D18 /* Alamofire */,
 				9E23C4B82BACA2F600BB7D18 /* SnapKit */,
 				9E23C4BB2BACA30200BB7D18 /* Then */,
+				C10E2A7F2BE20BFF002321B1 /* LookinServer */,
 			);
 			productName = FootMark;
 			productReference = 9E386F9A2BAC0C06007451F8 /* FootMark.app */;
@@ -519,6 +566,7 @@
 				9E23C4B42BACA2C800BB7D18 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				9E23C4B72BACA2F600BB7D18 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				9E23C4BA2BACA30200BB7D18 /* XCRemoteSwiftPackageReference "Then" */,
+				C10E2A7E2BE20BFF002321B1 /* XCRemoteSwiftPackageReference "LookinServer" */,
 			);
 			productRefGroup = 9E386F9B2BAC0C06007451F8 /* Products */;
 			projectDirPath = "";
@@ -589,12 +637,16 @@
 				9E3871292BAC1A03007451F8 /* BaseViewController.swift in Sources */,
 				9E3870572BAC1872007451F8 /* NetworkResult.swift in Sources */,
 				9E3870522BAC1872007451F8 /* BaseTargetType.swift in Sources */,
+				C10E2A742BE20293002321B1 /* SidebarView.swift in Sources */,
 				9E38716C2BAC1BCD007451F8 /* UIColor++.swift in Sources */,
 				9E386F9E2BAC0C06007451F8 /* AppDelegate.swift in Sources */,
 				9E38716A2BAC1BCD007451F8 /* UIView++.swift in Sources */,
+				C10E2A7D2BE2095F002321B1 /* SidebarModel.swift in Sources */,
 				9E38716B2BAC1BCD007451F8 /* UITextField++.swift in Sources */,
+				C10E2A762BE2029C002321B1 /* SidebarViewController.swift in Sources */,
 				9E3871452BAC1AA3007451F8 /* Font.swift in Sources */,
 				9E3871632BAC1BCD007451F8 /* UIViewController++.swift in Sources */,
+				C10E2A782BE202A7002321B1 /* MainContentViewController.swift in Sources */,
 				9E3870562BAC1872007451F8 /* URLConst.swift in Sources */,
 				9E3871642BAC1BCD007451F8 /* UIImage++.swift in Sources */,
 				9E3871712BAC1BCD007451F8 /* BaseNavigationController.swift in Sources */,
@@ -963,6 +1015,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		C10E2A7E2BE20BFF002321B1 /* XCRemoteSwiftPackageReference "LookinServer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/QMUI/LookinServer.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.8;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -980,6 +1040,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9E23C4BA2BACA30200BB7D18 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
+		};
+		C10E2A7F2BE20BFF002321B1 /* LookinServer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C10E2A7E2BE20BFF002321B1 /* XCRemoteSwiftPackageReference "LookinServer" */;
+			productName = LookinServer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
