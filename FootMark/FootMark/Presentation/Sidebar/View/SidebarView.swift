@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class SidebarView: BaseView {
 
@@ -38,6 +39,7 @@ class SidebarView: BaseView {
 final class SidebarTableViewCell: UITableViewCell {
     
     static let identifier = "SidebarTableViewCell"
+    var tableImageViewLeadingConstraint: Constraint?
     
     let tableImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
@@ -67,7 +69,7 @@ final class SidebarTableViewCell: UITableViewCell {
         
         tableImageView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(8)
-            $0.leading.equalToSuperview().offset(16)
+            self.tableImageViewLeadingConstraint = $0.leading.equalToSuperview().offset(16).constraint
             $0.size.equalTo(45)
         }
         
@@ -80,22 +82,20 @@ final class SidebarTableViewCell: UITableViewCell {
     func dataBind(_ sidebarData: SidebarModel) {
         tableImageView.image = sidebarData.image
         tableLabel.text = sidebarData.title
+        
+        if sidebarData.title == "Logout" {
+            tableImageViewLeadingConstraint?.update(offset: 20)
+        } else {
+            tableImageViewLeadingConstraint?.update(offset: 16)
+        }
     }
 }
 
 extension UIImage {
-    static func systemIcon(name: String, tintColor: UIColor = .black) -> UIImage? {
-        guard let image = UIImage(systemName: name) else { return nil }
+    static func systemIcon(name: String, tintColor: UIColor = .black, weight: UIImage.SymbolWeight = .regular) -> UIImage? {
+        let configuration = UIImage.SymbolConfiguration(weight: weight)
+        guard let image = UIImage(systemName: name, withConfiguration: configuration) else { return nil }
         return image.withTintColor(tintColor, renderingMode: .alwaysOriginal)
     }
-
-    func withLeftPadding(_ padding: CGFloat) -> UIImage? {
-        let newSize = CGSize(width: self.size.width + padding, height: self.size.height)
-        let renderer = UIGraphicsImageRenderer(size: newSize)
-        let newImage = renderer.image { (context) in
-            self.draw(at: CGPoint(x: padding, y: 0))
-        }
-        
-        return newImage
-    }
 }
+
