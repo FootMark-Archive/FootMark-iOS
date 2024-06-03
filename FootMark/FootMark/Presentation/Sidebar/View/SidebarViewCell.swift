@@ -10,7 +10,8 @@ import SnapKit
 
 class SidebarViewCell: UITableViewCell {
     
-    static let identifier = "SidebarTableViewCell"
+    static let identifier = "SidebarViewCell"
+    
     var tableImageViewLeadingConstraint: Constraint?
     
     let tableImageView = UIImageView().then {

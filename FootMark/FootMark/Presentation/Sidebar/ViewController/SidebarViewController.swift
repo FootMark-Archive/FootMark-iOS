@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SidebarViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
+class SidebarViewController: BaseViewController {
     
     var sidebarView = SidebarView()
     let sidebarList = SidebarModel.dummy()
@@ -17,7 +17,7 @@ class SidebarViewController: BaseViewController, UITableViewDelegate, UITableVie
         
         sidebarView.tableView.dataSource = self
         sidebarView.tableView.delegate = self
-        sidebarView.tableView.register(SidebarTableViewCell.self, forCellReuseIdentifier: "SidebarTableViewCell")
+        sidebarView.tableView.register(SidebarViewCell.self, forCellReuseIdentifier: "SidebarViewCell")
     }
     
     override func setLayout() {
@@ -30,6 +30,9 @@ class SidebarViewController: BaseViewController, UITableViewDelegate, UITableVie
             $0.trailing.equalToSuperview()
         }
     }
+}
+
+extension SidebarViewController : UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return sidebarList.count
@@ -42,17 +45,17 @@ class SidebarViewController: BaseViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sidebarList[section].count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: SidebarTableViewCell.identifier,
-            for: indexPath) as? SidebarTableViewCell else { return UITableViewCell() }
+            withIdentifier: SidebarViewCell.identifier,
+            for: indexPath) as? SidebarViewCell else { return UITableViewCell() }
         cell.dataBind(sidebarList[indexPath.section][indexPath.row])
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-
+        
         let averageCellHeight: CGFloat = 44.0
         let numberOfCellsInSection = tableView.numberOfRows(inSection: section)
         let totalCellHeight = averageCellHeight * CGFloat(numberOfCellsInSection)
@@ -69,7 +72,7 @@ class SidebarViewController: BaseViewController, UITableViewDelegate, UITableVie
             return 0.0
         }
     }
-
+    
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section < sidebarList.count - 1 {
             let footerView = UIView()
@@ -79,7 +82,7 @@ class SidebarViewController: BaseViewController, UITableViewDelegate, UITableVie
             return nil
         }
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = sidebarList[indexPath.section][indexPath.row]
         print("\(selectedItem.title) 선택됨")

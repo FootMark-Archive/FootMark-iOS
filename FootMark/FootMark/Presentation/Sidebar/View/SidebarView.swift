@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 class SidebarView: BaseView {
-
+    
     var tableView = UITableView().then() {
         $0.layer.borderWidth = 1.0
         $0.layer.borderColor = UIColor.black.cgColor
@@ -30,8 +30,8 @@ class SidebarView: BaseView {
     
     private func register() {
         tableView.register(
-            SidebarTableViewCell.self,
-            forCellReuseIdentifier: SidebarTableViewCell.identifier
+            SidebarViewCell.self,
+            forCellReuseIdentifier: SidebarViewCell.identifier
         )
     }
 }

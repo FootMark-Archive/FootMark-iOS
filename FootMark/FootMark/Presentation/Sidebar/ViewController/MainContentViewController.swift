@@ -47,7 +47,7 @@ class MainContentViewController: BaseViewController {
         
         self.addChild(sidebarVC)
         self.view.addSubview(sidebarVC.view)
-
+        
         let sidebarWidth = self.view.frame.width * 2 / 3
         sidebarVC.view.frame = CGRect(x: -sidebarWidth, y: 0, width: sidebarWidth, height: self.view.frame.height)
         
@@ -60,7 +60,7 @@ class MainContentViewController: BaseViewController {
             }
         }
     }
-
+    
     func setupDimmingView() {
         dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.0)
         dimmingView.alpha = 0.0
@@ -76,7 +76,7 @@ class MainContentViewController: BaseViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideSidebar))
         dimmingView.addGestureRecognizer(tapGesture)
     }
-
+    
     
     @objc func handleTap(_ gesture: UITapGestureRecognizer) {
         hideSidebar()
@@ -89,7 +89,7 @@ class MainContentViewController: BaseViewController {
             showSidebar()
         }
     }
-
+    
     @objc func hideSidebar() {
         guard let sidebarVC = sidebarVC else { return }
         
