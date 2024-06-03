@@ -59,6 +59,7 @@
 		C10E2A782BE202A7002321B1 /* MainContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10E2A772BE202A7002321B1 /* MainContentViewController.swift */; };
 		C10E2A7D2BE2095F002321B1 /* SidebarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10E2A7C2BE2095F002321B1 /* SidebarModel.swift */; };
 		C10E2A802BE20BFF002321B1 /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = C10E2A7F2BE20BFF002321B1 /* LookinServer */; };
+		C1B6A04D2C0D8265003ECA62 /* SidebarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B6A04C2C0D8265003ECA62 /* SidebarViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,6 +132,7 @@
 		C10E2A752BE2029C002321B1 /* SidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewController.swift; sourceTree = "<group>"; };
 		C10E2A772BE202A7002321B1 /* MainContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentViewController.swift; sourceTree = "<group>"; };
 		C10E2A7C2BE2095F002321B1 /* SidebarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarModel.swift; sourceTree = "<group>"; };
+		C1B6A04C2C0D8265003ECA62 /* SidebarViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -447,6 +449,7 @@
 			isa = PBXGroup;
 			children = (
 				C10E2A732BE20293002321B1 /* SidebarView.swift */,
+				C1B6A04C2C0D8265003ECA62 /* SidebarViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -647,6 +650,7 @@
 				9E3871452BAC1AA3007451F8 /* Font.swift in Sources */,
 				9E3871632BAC1BCD007451F8 /* UIViewController++.swift in Sources */,
 				C10E2A782BE202A7002321B1 /* MainContentViewController.swift in Sources */,
+				C1B6A04D2C0D8265003ECA62 /* SidebarViewCell.swift in Sources */,
 				9E3870562BAC1872007451F8 /* URLConst.swift in Sources */,
 				9E3871642BAC1BCD007451F8 /* UIImage++.swift in Sources */,
 				9E3871712BAC1BCD007451F8 /* BaseNavigationController.swift in Sources */,
