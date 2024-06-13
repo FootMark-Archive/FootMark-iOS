@@ -100,6 +100,8 @@
 		C1B6A0562C0EFB7F003ECA62 /* MainContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B6A0552C0EFB7F003ECA62 /* MainContentViewController.swift */; };
 		C1B6A0582C0EFBC3003ECA62 /* SidebarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B6A0572C0EFBC3003ECA62 /* SidebarViewCell.swift */; };
 		C1B6A05C2C0EFBEA003ECA62 /* SidebarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B6A05B2C0EFBEA003ECA62 /* SidebarModel.swift */; };
+		C1DF9F2A2C1AB9DE00924DD9 /* PutEmojiRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF9F292C1AB9DE00924DD9 /* PutEmojiRequestModel.swift */; };
+		C1DF9F2C2C1AB9F400924DD9 /* PutEmojiDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF9F2B2C1AB9F400924DD9 /* PutEmojiDTO.swift */; };
 		C1E74B962C0F6D9F00D8E313 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1E74B952C0F6D9F00D8E313 /* ProfileViewController.swift */; };
 		C1E74B982C0F6DBD00D8E313 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1E74B972C0F6DBD00D8E313 /* ProfileView.swift */; };
 		C1E74B9A2C0F6DF500D8E313 /* ProfileImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1E74B992C0F6DF500D8E313 /* ProfileImageViewController.swift */; };
@@ -184,6 +186,8 @@
 		C1B6A0552C0EFB7F003ECA62 /* MainContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentViewController.swift; sourceTree = "<group>"; };
 		C1B6A0572C0EFBC3003ECA62 /* SidebarViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewCell.swift; sourceTree = "<group>"; };
 		C1B6A05B2C0EFBEA003ECA62 /* SidebarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarModel.swift; sourceTree = "<group>"; };
+		C1DF9F292C1AB9DE00924DD9 /* PutEmojiRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmojiRequestModel.swift; sourceTree = "<group>"; };
+		C1DF9F2B2C1AB9F400924DD9 /* PutEmojiDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmojiDTO.swift; sourceTree = "<group>"; };
 		C1E74B952C0F6D9F00D8E313 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = FootMark/Presentation/Sidebar/ViewController/ProfileViewController.swift; sourceTree = SOURCE_ROOT; };
 		C1E74B972C0F6DBD00D8E313 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		C1E74B992C0F6DF500D8E313 /* ProfileImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageViewController.swift; sourceTree = "<group>"; };
@@ -538,6 +542,7 @@
 			isa = PBXGroup;
 			children = (
 				9E6451F62C15DBE80026C29D /* PostEmojiDTO.swift */,
+				C1DF9F2B2C1AB9F400924DD9 /* PutEmojiDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -546,6 +551,7 @@
 			isa = PBXGroup;
 			children = (
 				9E6451F42C15DBB20026C29D /* PostEmojiRequestModel.swift */,
+				C1DF9F292C1AB9DE00924DD9 /* PutEmojiRequestModel.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -870,6 +876,7 @@
 				9E3871682BAC1BCD007451F8 /* NSObject++.swift in Sources */,
 				C1B6A0522C0EFB33003ECA62 /* SidebarView.swift in Sources */,
 				9E1B09432BDF9B08007AAB48 /* LoginRequestModel.swift in Sources */,
+				C1DF9F2C2C1AB9F400924DD9 /* PutEmojiDTO.swift in Sources */,
 				C1E74B9A2C0F6DF500D8E313 /* ProfileImageViewController.swift in Sources */,
 				9E386FA22BAC0C06007451F8 /* MainViewController.swift in Sources */,
 				9E38713C2BAC1AA3007451F8 /* Colors.swift in Sources */,
@@ -895,6 +902,7 @@
 				9E6090F72BCE794B00D018B2 /* LoginDTO.swift in Sources */,
 				9E74C3442C0955D6003152A7 /* BaseService.swift in Sources */,
 				9E6451F72C15DBE80026C29D /* PostEmojiDTO.swift in Sources */,
+				C1DF9F2A2C1AB9DE00924DD9 /* PutEmojiRequestModel.swift in Sources */,
 				9E6451F52C15DBB20026C29D /* PostEmojiRequestModel.swift in Sources */,
 				9E3871452BAC1AA3007451F8 /* Font.swift in Sources */,
 				9E74C3532C095A68003152A7 /* LoginService.swift in Sources */,

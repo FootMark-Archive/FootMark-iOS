@@ -8,6 +8,7 @@
 import UIKit
 import ElegantEmojiPicker
 import DropDown
+import Foundation
 
 class DiaryViewController: BaseViewController {
     var diaryView = DiaryView()
@@ -19,6 +20,8 @@ class DiaryViewController: BaseViewController {
         view.backgroundColor = UIColor(resource: .black1)
         
         navigationController?.navigationBar.isHidden = true
+        
+        addEmoji()
         
         setUpDelegates()
         setUpClosures()
@@ -40,6 +43,51 @@ class DiaryViewController: BaseViewController {
         diaryView.categoryButton.addTarget(self, action: #selector(categoryButtonTapped), for: .touchUpInside)
         
         diaryView.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+    }
+    
+    func addEmoji() {
+        NetworkService.shared.emojiService.postEmoji(request: PostEmojiRequestModel(createAt: "", todayEmoji: "")) { result in
+            switch result {
+            case .success(let EmojiResponseDTO):
+                print(EmojiResponseDTO)
+                DispatchQueue.main.async {
+                    self.diaryView.emojiLabel.text = EmojiResponseDTO.data.todayEmoji
+                }
+            case .tokenExpired(_):
+                print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
+            case .requestErr:
+                print("요청 오류입니다")
+            case .decodedErr:
+                print("디코딩 오류입니다")
+            case .pathErr:
+                print("경로 오류입니다")
+            case .serverErr:
+                print("서버 오류입니다")
+            case .networkFail:
+                print("네트워크 오류입니다")
+            }
+        }
+    }
+    
+    func editEmoji(createAt: String) {
+        NetworkService.shared.emojiService.putEmoji(createAt: createAt, request: PutEmojiRequestModel(todayEmoji: "")) { result in
+            switch result {
+            case .success(let EmojiResponseDTO):
+                print(EmojiResponseDTO)
+            case .tokenExpired(_):
+                print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
+            case .requestErr:
+                print("요청 오류입니다")
+            case .decodedErr:
+                print("디코딩 오류입니다")
+            case .pathErr:
+                print("경로 오류입니다")
+            case .serverErr:
+                print("서버 오류입니다")
+            case .networkFail:
+                print("네트워크 오류입니다")
+            }
+        }
     }
     
     func setUpDelegates() {
@@ -65,7 +113,7 @@ class DiaryViewController: BaseViewController {
     func setupDropDown() {
         dropDown.anchorView = diaryView.categoryButton
         dropDown.bottomOffset = CGPoint(x: 0, y: diaryView.categoryButton.bounds.height + 80)
-        dropDown.dataSource = ["운동", "공부"]
+        dropDown.dataSource = ["운동", "약속", "공부"]
         dropDown.backgroundColor = .white
         
         dropDown.textFont = UIFont.pretendard(size: 18, weight: .regular)
@@ -78,7 +126,6 @@ class DiaryViewController: BaseViewController {
         dropDown.selectionAction = { [weak self] (index: Int, item: String) in
             self?.diaryView.categoryButton.setTitle(item, for: .normal)
             self?.diaryView.categoryLabel.text = item
-            self?.diaryView.todoTextView.text = ""
         }
     }
     
