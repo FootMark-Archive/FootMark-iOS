@@ -8,7 +8,6 @@
 import UIKit
 import ElegantEmojiPicker
 import DropDown
-import Foundation
 
 class DiaryViewController: BaseViewController {
     var diaryView = DiaryView()
@@ -20,8 +19,6 @@ class DiaryViewController: BaseViewController {
         view.backgroundColor = UIColor(resource: .black1)
         
         navigationController?.navigationBar.isHidden = true
-        
-        addEmoji()
         
         setUpDelegates()
         setUpClosures()
@@ -46,7 +43,32 @@ class DiaryViewController: BaseViewController {
     }
     
     func addEmoji() {
-        NetworkService.shared.emojiService.postEmoji(request: PostEmojiRequestModel(createAt: "", todayEmoji: "")) { result in
+        NetworkService.shared.emojiService.postEmoji(request: PostEmojiRequestModel(createAt: diaryView.dateLabel.text ?? "", todayEmoji: diaryView.emojiLabel.text ?? "")) { result in
+            switch result {
+            case .success(let EmojiResponseDTO):
+                print(EmojiResponseDTO)
+                DispatchQueue.main.async {
+                    self.diaryView.dateLabel.text = EmojiResponseDTO.data.createAt
+                    self.diaryView.emojiLabel.text = EmojiResponseDTO.data.todayEmoji
+                }
+            case .tokenExpired(_):
+                print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
+            case .requestErr:
+                print("요청 오류입니다")
+            case .decodedErr:
+                print("디코딩 오류입니다")
+            case .pathErr:
+                print("경로 오류입니다")
+            case .serverErr:
+                print("서버 오류입니다")
+            case .networkFail:
+                print("네트워크 오류입니다")
+            }
+        }
+    }
+    
+    func editEmoji(createAt: String) {
+        NetworkService.shared.emojiService.putEmoji(createAt: createAt, request: PutEmojiRequestModel(todayEmoji: diaryView.emojiLabel.text ?? "")) { result in
             switch result {
             case .success(let EmojiResponseDTO):
                 print(EmojiResponseDTO)
@@ -69,11 +91,37 @@ class DiaryViewController: BaseViewController {
         }
     }
     
-    func editEmoji(createAt: String) {
-        NetworkService.shared.emojiService.putEmoji(createAt: createAt, request: PutEmojiRequestModel(todayEmoji: "")) { result in
+    func addReview() {
+        NetworkService.shared.reviewService.postReview(request: PostReviewRequestModel(createAt: diaryView.dateLabel.text ?? "", categoryId: 0, content: "")) { result in
             switch result {
-            case .success(let EmojiResponseDTO):
-                print(EmojiResponseDTO)
+            case .success(let ReviewResponseDTO):
+                print(ReviewResponseDTO)
+                DispatchQueue.main.async {
+                    self.diaryView.todoTextView.text = ReviewResponseDTO.data.content
+                    self.diaryView.thankfulLabel.text = ReviewResponseDTO.data.content
+                    self.diaryView.bestTextView.text = ReviewResponseDTO.data.content
+                }
+            case .tokenExpired(_):
+                print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
+            case .requestErr:
+                print("요청 오류입니다")
+            case .decodedErr:
+                print("디코딩 오류입니다")
+            case .pathErr:
+                print("경로 오류입니다")
+            case .serverErr:
+                print("서버 오류입니다")
+            case .networkFail:
+                print("네트워크 오류입니다")
+            }
+        }
+    }
+    
+    func editReview(content: String) {
+        NetworkService.shared.reviewService.putReview(content: content, request: PutReviewRequestModel(content: "")) { result in
+            switch result {
+            case .success(let ReviewResponseDTO):
+                print(ReviewResponseDTO)
             case .tokenExpired(_):
                 print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
             case .requestErr:
@@ -131,6 +179,8 @@ class DiaryViewController: BaseViewController {
     
     @objc func saveButtonTapped() {
         print("save")
+        addEmoji()
+        addReview()
     }
 }
 
@@ -147,6 +197,9 @@ extension DiaryViewController: ElegantEmojiPickerDelegate {
     
     @objc func emojiLabelTapped() {
         diaryView.emojiPickerHandler?()
+        if let createAt = diaryView.dateLabel.text {
+            editEmoji(createAt: createAt)
+        }
     }
 }
 

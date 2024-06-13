@@ -32,7 +32,6 @@ class DiaryView: BaseView {
     
     let dateLabel = UILabel().then {
         $0.font = UIFont.pretendard(size: 20, weight: .regular)
-        $0.text = "2023.03.24 (일)"
         $0.textColor = UIColor(resource: .white2)
     }
     
@@ -160,7 +159,8 @@ class DiaryView: BaseView {
         
         categoryButton.snp.makeConstraints {
             $0.top.equalTo(self.emojiLabel.snp.bottom).offset(30)
-            $0.leading.equalTo(dateLabel.snp.trailing).offset(40)
+            $0.centerY.equalTo(self.dateLabel.snp.centerY)
+            $0.trailing.equalToSuperview().offset(-30)
             $0.width.equalTo(150)
             $0.height.equalTo(50)
         }

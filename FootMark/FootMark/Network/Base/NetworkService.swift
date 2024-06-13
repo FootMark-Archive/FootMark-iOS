@@ -8,11 +8,12 @@
 import Foundation
 
 final class NetworkService {
-   
-   static let shared = NetworkService()
-   
-   private init() {}
-   
-   let loginService: LoginService = LoginService()
-   let emojiService: EmojiService = EmojiService()
+    
+    static let shared = NetworkService()
+    
+    private init() {}
+    
+    let loginService: LoginService = LoginService()
+    let emojiService: EmojiService = EmojiService()
+    let reviewService: ReviewService = ReviewService()
 }
