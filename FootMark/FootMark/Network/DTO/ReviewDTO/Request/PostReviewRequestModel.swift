@@ -13,3 +13,8 @@ struct PostReviewRequestModel: Codable {
     let categoryId: Int
     let content: String
 }
+
+func createPostReviewRequestModel(createAt: String, categoryId: Int, content: String) -> PostReviewRequestModel {
+
+    return PostReviewRequestModel(createAt: createAt, categoryId: categoryId, content: content)
+}

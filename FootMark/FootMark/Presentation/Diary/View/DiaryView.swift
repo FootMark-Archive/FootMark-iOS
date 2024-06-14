@@ -32,6 +32,7 @@ class DiaryView: BaseView {
     
     let dateLabel = UILabel().then {
         $0.font = UIFont.pretendard(size: 20, weight: .regular)
+        $0.text = "2023-04-22"
         $0.textColor = UIColor(resource: .white2)
     }
     

@@ -13,6 +13,8 @@ class DiaryViewController: BaseViewController {
     var diaryView = DiaryView()
     let dropDown = DropDown()
     
+    var categoryTodos: [String: String] = ["운동": "운동 더미 데이터", "공부": "공부 더미 데이터"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,14 +25,11 @@ class DiaryViewController: BaseViewController {
         setUpDelegates()
         setUpClosures()
         setupDropDown()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        
         getTodos(createAt: diaryView.dateLabel.text ?? "2023-04-23")
+        diaryView.todoLabel.text = categoryTodos["운동"]
     }
 
-    
     override func setLayout() {
         view.addSubviews(diaryView)
         
@@ -98,7 +97,7 @@ class DiaryViewController: BaseViewController {
     }
     
     func addReview() {
-        NetworkService.shared.reviewService.postReview(request: PostReviewRequestModel(createAt: diaryView.dateLabel.text ?? "", categoryId: 0, content: "")) { result in
+        NetworkService.shared.reviewService.postReview(request: PostReviewRequestModel(createAt: diaryView.dateLabel.text ?? "2024-04-11", categoryId: 0, content: "")) { result in
             switch result {
             case .success(let ReviewResponseDTO):
                 print(ReviewResponseDTO)
@@ -154,6 +153,8 @@ class DiaryViewController: BaseViewController {
                     if let firstCategory = TodosResponseDTO.data.todoDateResDtos.first {
                         self.diaryView.todoLabel.text = firstCategory.content.joined(separator: ", ")
                         self.dropDown.dataSource = TodosResponseDTO.data.todoDateResDtos.map { $0.categoryName }
+                        // 카테고리별로 내용을 저장
+                        self.categoryTodos = Dictionary(uniqueKeysWithValues: TodosResponseDTO.data.todoDateResDtos.map { ($0.categoryName, $0.content.joined(separator: ", ")) })
                     }
                 }
             case .tokenExpired(_):
@@ -195,7 +196,7 @@ class DiaryViewController: BaseViewController {
     func setupDropDown() {
         dropDown.anchorView = diaryView.categoryButton
         dropDown.bottomOffset = CGPoint(x: 0, y: diaryView.categoryButton.bounds.height + 80)
-        dropDown.dataSource = ["운동", "약속", "공부"]
+        dropDown.dataSource = ["운동", "공부"]
         dropDown.backgroundColor = .white
         
         dropDown.textFont = UIFont.pretendard(size: 18, weight: .regular)
@@ -203,18 +204,19 @@ class DiaryViewController: BaseViewController {
         if let firstCategory = dropDown.dataSource.first {
             diaryView.categoryButton.setTitle(firstCategory, for: .normal)
             diaryView.categoryLabel.text = firstCategory
+            diaryView.todoLabel.text = categoryTodos[firstCategory] ?? ""
         }
         
         dropDown.selectionAction = { [weak self] (index: Int, item: String) in
             self?.diaryView.categoryButton.setTitle(item, for: .normal)
             self?.diaryView.categoryLabel.text = item
+            self?.diaryView.todoLabel.text = self?.categoryTodos[item] ?? ""
         }
     }
     
     @objc func saveButtonTapped() {
         print("save")
         addEmoji()
-        addReview()
     }
 }
 
@@ -239,12 +241,12 @@ extension DiaryViewController: ElegantEmojiPickerDelegate {
 
 extension DiaryViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n" {
-            textView.resignFirstResponder()
-            return false
+            if text == "\n" {
+                textView.resignFirstResponder()
+                return false
+            }
+            return true
         }
-        return true
-    }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         print("텍스트 필드 편집 시작")
@@ -252,5 +254,6 @@ extension DiaryViewController: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         print("텍스트 필드 편집 종료")
+        addReview()
     }
 }

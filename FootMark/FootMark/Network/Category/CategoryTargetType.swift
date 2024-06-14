@@ -40,8 +40,8 @@ extension CategoryTargetType: BaseTargetType {
     
     var headers: [String : String]? {
         switch self {
-        case .getTodos(_):
-            return ["Content-Type": "application/json"]
+        case .getTodos(let createAt):
+            return ["Content-Type": "application/json", "createAt": createAt]
         }
     }
 }

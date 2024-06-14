@@ -15,7 +15,7 @@ protocol CategoryServiceProtocol {
 
 let keychain = KeychainSwift()
 //let accessToken = keychain.get("accessToken")
-let accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwNDIweXVuQGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJpYXQiOjE3MTgzMzM0NzksImV4cCI6MTcxODMzNzA3OX0.mbLTJQCyFgJq57jJxyMBugVv3pexSswlXXFOutIyJouIsbQLroMkXiizogZSUE8hINdh3ntd2zj35YBMSVad8Q"
+let accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwNDIweXVuQGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJpYXQiOjE3MTgzMzc0MzMsImV4cCI6MTcxODM0MTAzM30.txgKwRFq5cejfeZWlkWo41HeghGvY5uwneXJIFoS-18KobANyF4peL11ymymcsIHEbGpILPga5FtHxAbqPrnOw"
 
 let requestClosure = { (endpoint: Endpoint, done: @escaping MoyaProvider.RequestResultClosure) in
     do {
