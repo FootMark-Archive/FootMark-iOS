@@ -25,6 +25,12 @@ class DiaryViewController: BaseViewController {
         setupDropDown()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        getTodos(createAt: diaryView.dateLabel.text ?? "2023-04-23")
+    }
+
+    
     override func setLayout() {
         view.addSubviews(diaryView)
         
@@ -122,6 +128,34 @@ class DiaryViewController: BaseViewController {
             switch result {
             case .success(let ReviewResponseDTO):
                 print(ReviewResponseDTO)
+            case .tokenExpired(_):
+                print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
+            case .requestErr:
+                print("요청 오류입니다")
+            case .decodedErr:
+                print("디코딩 오류입니다")
+            case .pathErr:
+                print("경로 오류입니다")
+            case .serverErr:
+                print("서버 오류입니다")
+            case .networkFail:
+                print("네트워크 오류입니다")
+            }
+        }
+    }
+    
+    func getTodos(createAt: String) {
+        print("getTodos 호출됨, createAt: \(createAt)")
+        NetworkService.shared.categoryService.getTodos(createAt: diaryView.dateLabel.text ?? "") { result in
+            switch result {
+            case .success(let TodosResponseDTO):
+                print(TodosResponseDTO)
+                DispatchQueue.main.async {
+                    if let firstCategory = TodosResponseDTO.data.todoDateResDtos.first {
+                        self.diaryView.todoLabel.text = firstCategory.content.joined(separator: ", ")
+                        self.dropDown.dataSource = TodosResponseDTO.data.todoDateResDtos.map { $0.categoryName }
+                    }
+                }
             case .tokenExpired(_):
                 print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
             case .requestErr:
