@@ -13,23 +13,34 @@ class KeychainManager {
     static let shared = KeychainManager()
     private let keychain = KeychainSwift()
     
-    // accessToken을 static으로 선언할 필요가 없으므로 인스턴스 메서드를 통해 접근
-    var accessToken: String? {
+    private init() {}
+    
+    func setAccessToken(_ token: String) {
+        keychain.set("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwNDIweXVuQGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJpYXQiOjE3MTg1MTk2ODUsImV4cCI6MTcxODUyMzI4NX0.bDWmMV0LCVwhX2PDu2CDuZtKMNWArOiNwOjLzKrs_jsdwnbf16f893RiwOuNJhRp2ImQFAn6kKQJxn5i9eJAUw", forKey: "accessToken")
+    }
+    
+    func getAccessToken() -> String? {
         return keychain.get("accessToken")
     }
     
-    // requestClosure를 클래스 메서드로 변경
-    static var requestClosure: (Endpoint, @escaping MoyaProvider.RequestResultClosure) -> Void = { endpoint, done in
-        // KeychainManager의 인스턴스를 통해 accessToken 가져오기
-        let accessToken = KeychainManager.shared.accessToken ?? ""
-        do {
-            var request = try endpoint.urlRequest()
-            // 헤더에 accessToken 추가
-            request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-            // 수정된 요청을 완료 클로저에 전달
-            done(.success(request))
-        } catch {
-            done(.failure(MoyaError.underlying(error, nil)))
-        }
+    func removeAccessToken() {
+        keychain.delete("accessToken")
     }
+    
+    // Moya 요청 클로저를 생성하는 메서드
+        func createRequestClosure() -> MoyaProvider<CategoryTargetType>.RequestClosure {
+            return { (endpoint: Endpoint, done: @escaping MoyaProvider.RequestResultClosure) in
+                do {
+                    var request = try endpoint.urlRequest()
+                    if let accessToken = self.getAccessToken() {
+                        request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+                    } else {
+                        request.addValue("accessToken 없음", forHTTPHeaderField: "Authorization")
+                    }
+                    done(.success(request))
+                } catch {
+                    done(.failure(MoyaError.underlying(error, nil)))
+                }
+            }
+        }
 }

@@ -10,37 +10,26 @@ import Moya
 import KeychainSwift
 
 protocol CategoryServiceProtocol {
-    func getTodos(createAt: String , completion: @escaping (NetworkResult<GetTodosDTO>) -> Void)
-}
-
-let keychain = KeychainSwift()
-//let accessToken = keychain.get("accessToken")
-let accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwNDIweXVuQGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJpYXQiOjE3MTgzMzc0MzMsImV4cCI6MTcxODM0MTAzM30.txgKwRFq5cejfeZWlkWo41HeghGvY5uwneXJIFoS-18KobANyF4peL11ymymcsIHEbGpILPga5FtHxAbqPrnOw"
-
-let requestClosure = { (endpoint: Endpoint, done: @escaping MoyaProvider.RequestResultClosure) in
-    do {
-        var request = try endpoint.urlRequest()
-        // 헤더에 accessToken 추가
-        request.addValue("Bearer \(accessToken ?? "accessToken 없음")", forHTTPHeaderField: "Authorization")
-        // 수정된 요청을 완료 클로저에 전달
-        done(.success(request))
-    } catch {
-        done(.failure(MoyaError.underlying(error, nil)))
-    }
+    func getTodo(createAt: String , completion: @escaping (NetworkResult<GetTodosDTO>) -> Void)
 }
 
 final class CategoryService: BaseService, CategoryServiceProtocol {
-    let moyaProvider = MoyaProvider<CategoryTargetType>(requestClosure: requestClosure, plugins: [MoyaLoggingPlugin()])
+    let moyaProvider: MoyaProvider<CategoryTargetType>
     
-    func getTodos(createAt: String , completion: @escaping (NetworkResult<GetTodosDTO>) -> Void) {
-        moyaProvider.request(.getTodos(createAt: createAt)) { result in
+    override init() {
+        self.moyaProvider = MoyaProvider<CategoryTargetType>(
+            requestClosure: KeychainManager.shared.createRequestClosure(),
+            plugins: [MoyaLoggingPlugin()]
+        )
+    }
+    
+    func getTodo(createAt: String , completion: @escaping (NetworkResult<GetTodosDTO>) -> Void) {
+        moyaProvider.request(.getTodo(createAt: createAt)) { result in
             switch result {
             case .success(let result):
                 let statusCode = result.statusCode
                 let data = result.data
-                if statusCode == 401 {
-                    print("인증 실패: \(String(data: data, encoding: .utf8) ?? "데이터 없음")")
-                }
+
                 let networkResult: NetworkResult<GetTodosDTO> = self.judgeStatus(statusCode: statusCode, data: data)
                 completion(networkResult)
                 
@@ -50,4 +39,3 @@ final class CategoryService: BaseService, CategoryServiceProtocol {
         }
     }
 }
-
