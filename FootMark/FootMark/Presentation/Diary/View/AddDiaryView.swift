@@ -1,21 +1,18 @@
 //
-//  DiaryView.controller.swift
+//  DiaryView.swift
 //  FootMark
 //
-//  Created by 윤성은 on 6/18/24.
+//  Created by 윤성은 on 3/24/24.
 //
 
 import UIKit
 
-protocol DiaryViewDelegate: AnyObject {
-    func deleteButtonTapped()
+protocol addDiaryViewDelegate: AnyObject {
     func saveButtonTapped()
-    func editButtonTapped()
-    func backButtonTapped()
 }
 
-class DiaryView: BaseView {
-    weak var delegate: DiaryViewDelegate?
+class AddDiaryView: BaseView {
+    weak var delegate: addDiaryViewDelegate?
     
     var emojiPickerHandler: (() -> Void)?
     
@@ -76,7 +73,7 @@ class DiaryView: BaseView {
         $0.textColor = UIColor(resource: .white2)
     }
     
-    var todoTextView = UITextView().then {
+    let todoTextView = UITextView().then {
         $0.font = UIFont.pretendard(size: 16, weight: .regular)
         $0.isScrollEnabled = true
         $0.autocorrectionType = .no
@@ -92,7 +89,7 @@ class DiaryView: BaseView {
         $0.textColor = UIColor(resource: .white2)
     }
     
-    var thankfulTextView = UITextView().then {
+    let thankfulTextView = UITextView().then {
         $0.font = UIFont.pretendard(size: 16, weight: .regular)
         $0.isScrollEnabled = true
         $0.autocorrectionType = .no
@@ -108,7 +105,7 @@ class DiaryView: BaseView {
         $0.textColor = UIColor(resource: .white2)
     }
     
-    var bestTextView = UITextView().then {
+    let bestTextView = UITextView().then {
         $0.font = UIFont.pretendard(size: 16, weight: .regular)
         $0.isScrollEnabled = true
         $0.autocorrectionType = .no
@@ -126,51 +123,6 @@ class DiaryView: BaseView {
         $0.layer.borderColor = UIColor.gray.cgColor
         $0.layer.borderWidth = 1.0
         $0.layer.cornerRadius = 5.0
-    }
-    
-    let editButton = UIButton().then {
-        $0.backgroundColor = UIColor.white
-        $0.setTitleColor(UIColor.black, for: .normal)
-        $0.titleLabel?.font = UIFont.pretendard(size: 20, weight: .semibold)
-        
-        $0.layer.borderColor = UIColor.gray.cgColor
-        $0.layer.borderWidth = 1.0
-        $0.layer.cornerRadius = 5.0
-        
-        var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: "pencil")
-        config.imagePlacement = .trailing
-        config.imagePadding = 15
-        config.imageColorTransformer = UIConfigurationColorTransformer { _ in
-            return UIColor(resource: .blue1)
-        }
-        
-        $0.configuration = config
-    }
-    
-    let deleteButton = UIButton().then {
-        $0.backgroundColor = UIColor.white
-        $0.setTitleColor(UIColor.black, for: .normal)
-        $0.titleLabel?.font = UIFont.pretendard(size: 20, weight: .semibold)
-        
-        $0.layer.borderColor = UIColor.gray.cgColor
-        $0.layer.borderWidth = 1.0
-        $0.layer.cornerRadius = 5.0
-        
-        var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: "trash")
-        config.imagePlacement = .trailing
-        config.imagePadding = 15
-        config.imageColorTransformer = UIConfigurationColorTransformer { _ in
-            return UIColor(resource: .blue1)
-        }
-        
-        $0.configuration = config
-    }
-    
-    let backButton = UIButton().then {
-        $0.setTitle("취소", for: .normal)
-        $0.setTitleColor(UIColor(resource: .white2), for: .normal)
     }
     
     override func setLayout() {
@@ -192,9 +144,6 @@ class DiaryView: BaseView {
         contentView.addSubview(bestLabel)
         contentView.addSubview(bestTextView)
         
-        contentView.addSubview(editButton)
-        contentView.addSubview(deleteButton)
-        contentView.addSubview(backButton)
         contentView.addSubview(saveButton)
         
         emojiLabel.snp.makeConstraints {
@@ -261,28 +210,11 @@ class DiaryView: BaseView {
             $0.height.equalTo(200)
         }
         
-        deleteButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(10)
-            $0.leading.equalTo(emojiLabel.snp.trailing).offset(50)
-            $0.size.equalTo(CGSize(width: 40, height: 40))
-        }
-        
-        editButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(10)
-            $0.leading.equalTo(deleteButton.snp.trailing).offset(20)
-            $0.size.equalTo(CGSize(width: 40, height: 40))
-        }
-        
-        backButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(10)
-            $0.leading.equalToSuperview().offset(20)
-            $0.size.equalTo(CGSize(width: 44, height: 44))
-        }
-        
         saveButton.snp.makeConstraints {
             $0.top.equalTo(self.bestTextView.snp.bottom).offset(100)
             $0.centerX.equalToSuperview()
-            $0.size.equalTo(CGSize(width: 350, height: 50))
+            $0.width.equalTo(350)
+            $0.height.equalTo(50)
         }
         
         contentView.snp.makeConstraints {
@@ -294,17 +226,5 @@ class DiaryView: BaseView {
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(self.safeAreaLayoutGuide)
         }
-    }
-    
-    @objc private func saveButtonTapped() {
-        delegate?.saveButtonTapped()
-    }
-    
-    @objc private func editButtonTapped() {
-        delegate?.editButtonTapped()
-    }
-    
-    @objc private func backButtonTapped() {
-        delegate?.backButtonTapped()
     }
 }

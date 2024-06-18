@@ -10,7 +10,8 @@ import Moya
 
 enum ReviewTargetType {
     case addReview(request: PostReviewRequestModel)
-    case editReview(content: String, request: PutReviewRequestModel)
+    case editReview(reviewId: Int, request: PutReviewRequestModel)
+    case delReview(reviewId: Int)
 }
 
 extension ReviewTargetType: BaseTargetType {
@@ -23,8 +24,11 @@ extension ReviewTargetType: BaseTargetType {
         case .addReview(_):
             return "/review"
             
-        case .editReview(let content, _):
-            return "/review/{reviewId}"
+        case .editReview(let reviewId, _):
+            return "/review/\(reviewId)"
+            
+        case .delReview(let reviewId):
+            return "/review/\(reviewId)"
         }
     }
     
@@ -33,8 +37,11 @@ extension ReviewTargetType: BaseTargetType {
         case .addReview(_):
             return .post
             
-        case .editReview(let content, _):
+        case .editReview(let reviewId, _):
             return .put
+            
+        case .delReview(let reviewId):
+            return .delete
         }
     }
     
@@ -45,6 +52,9 @@ extension ReviewTargetType: BaseTargetType {
             
         case .editReview(_, let request):
             return .requestJSONEncodable(request)
+            
+        case .delReview(_):
+            return .requestPlain
         }
     }
     
@@ -54,6 +64,9 @@ extension ReviewTargetType: BaseTargetType {
             return ["Content-Type": "application/json"]
             
         case .editReview(_, _):
+            return ["Content-Type": "application/json"]
+            
+        case .delReview(_):
             return ["Content-Type": "application/json"]
         }
     }

@@ -11,7 +11,8 @@ import KeychainSwift
 
 protocol ReviewServiceProtocol {
     func postReview(request: PostReviewRequestModel, completion: @escaping (NetworkResult<PostReviewDTO>) -> Void)
-    func putReview(content: String ,request: PutReviewRequestModel, completion: @escaping (NetworkResult<PutReviewDTO>) -> Void)
+    func putReview(reviewId: Int ,request: PutReviewRequestModel, completion: @escaping (NetworkResult<PutReviewDTO>) -> Void)
+    func delReview(reviewId: Int, completion: @escaping (NetworkResult<DelReviewDTO>) -> Void)
 }
 
 final class ReviewService: BaseService, ReviewServiceProtocol {
@@ -41,14 +42,30 @@ final class ReviewService: BaseService, ReviewServiceProtocol {
         }
     }
     
-    func putReview(content: String ,request: PutReviewRequestModel, completion: @escaping (NetworkResult<PutReviewDTO>) -> Void) {
-        moyaProvider.request(.editReview(content: content, request: request)) { result in
+    func putReview(reviewId: Int ,request: PutReviewRequestModel, completion: @escaping (NetworkResult<PutReviewDTO>) -> Void) {
+        moyaProvider.request(.editReview(reviewId: reviewId, request: request)) { result in
             switch result {
             case .success(let result):
                 let statusCode = result.statusCode
                 let data = result.data
                 
                 let networkResult: NetworkResult<PutReviewDTO> = self.judgeStatus(statusCode: statusCode, data: data)
+                completion(networkResult)
+                
+            case .failure:
+                completion(.networkFail)
+            }
+        }
+    }
+    
+    func delReview(reviewId: Int, completion: @escaping (NetworkResult<DelReviewDTO>) -> Void) {
+        moyaProvider.request(.delReview(reviewId: reviewId)) { result in
+            switch result {
+            case .success(let result):
+                let statusCode = result.statusCode
+                let data = result.data
+                
+                let networkResult: NetworkResult<DelReviewDTO> = self.judgeStatus(statusCode: statusCode, data: data)
                 completion(networkResult)
                 
             case .failure:

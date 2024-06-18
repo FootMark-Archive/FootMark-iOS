@@ -2,7 +2,7 @@
 //  DiaryViewController.swift
 //  FootMark
 //
-//  Created by 윤성은 on 3/24/24.
+//  Created by 윤성은 on 6/18/24.
 //
 
 import UIKit
@@ -12,6 +12,12 @@ import DropDown
 class DiaryViewController: BaseViewController {
     var diaryView = DiaryView()
     let dropDown = DropDown()
+    
+    var isEditingMode: Bool = false {
+        didSet {
+            updateViewMode()
+        }
+    }
     
     var postReviewGoal1Content: String = ""
     var postReviewGoal2Content: String = ""
@@ -28,73 +34,272 @@ class DiaryViewController: BaseViewController {
         
         view.backgroundColor = UIColor(resource: .black1)
         
-        navigationController?.navigationBar.isHidden = true
+        diaryView.deleteButton.isHidden = false
+        diaryView.editButton.isHidden = false
+        diaryView.backButton.isHidden = true
+        diaryView.saveButton.isHidden = true
+        
+        diaryView.todoTextView.isUserInteractionEnabled = false
+        diaryView.thankfulTextView.isUserInteractionEnabled = false
+        diaryView.bestTextView.isUserInteractionEnabled = false
         
         setUpDelegates()
         setUpClosures()
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        let currentDate = formatter.string(from: Date())
-        diaryView.dateLabel.text = currentDate
+        diaryView.dateLabel.text = "2024-06-17"
         
         updateTodo()
-        
-        // Send data to server based on the number of categories
-        let categoriesCount = dropDown.dataSource.count
-        
-        dropdowncount = categoriesCount
     }
     
     override func setLayout() {
-        view.addSubviews(diaryView)
-        
-        diaryView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        print("🥸🥸🥸🥸🥸🥸 : \(dropdowncount)")
+
+        diaryView.subviews.forEach { $0.removeFromSuperview() }
+        diaryView.snp.removeConstraints()
+        diaryView.scrollView.subviews.forEach { $0.removeFromSuperview() }
+        diaryView.scrollView.snp.removeConstraints()
+        diaryView.contentView.subviews.forEach { $0.removeFromSuperview() }
+        diaryView.contentView.snp.removeConstraints()
+
+        // diaryView를 view에 추가
+        if diaryView.superview == nil {
+            view.addSubview(diaryView)
+        }
+
+        // dropdowncount에 따라 레이아웃 설정
+        if dropdowncount != 0 {
+            // diaryView에 scrollView와 contentView 추가
+            diaryView.addSubview(diaryView.scrollView)
+            diaryView.scrollView.addSubview(diaryView.contentView)
+            diaryView.contentView.addSubviews(
+                diaryView.emojiLabel,
+                diaryView.dateLabel,
+                diaryView.categoryButton,
+                diaryView.categoryLabel,
+                diaryView.todoLabel,
+                diaryView.todoTextView,
+                diaryView.thankfulLabel,
+                diaryView.thankfulTextView,
+                diaryView.bestLabel,
+                diaryView.bestTextView,
+                diaryView.deleteButton,
+                diaryView.editButton,
+                diaryView.backButton,
+                diaryView.saveButton
+            )
+            
+            // constraints 설정
+            diaryView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+
+            diaryView.emojiLabel.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.centerX.equalToSuperview()
+            }
+            
+            diaryView.dateLabel.snp.makeConstraints {
+                $0.top.equalTo(diaryView.emojiLabel.snp.bottom).offset(40)
+                $0.leading.trailing.equalToSuperview().inset(30)
+            }
+            
+            diaryView.categoryButton.snp.makeConstraints {
+                $0.top.equalTo(self.diaryView.emojiLabel.snp.bottom).offset(30)
+                $0.centerY.equalTo(self.diaryView.dateLabel.snp.centerY)
+                $0.trailing.equalToSuperview().offset(-30)
+                $0.width.equalTo(150)
+                $0.height.equalTo(50)
+            }
+            
+            diaryView.categoryLabel.snp.makeConstraints {
+                $0.top.equalTo(diaryView.dateLabel.snp.bottom).offset(50)
+                $0.leading.trailing.equalToSuperview().inset(30)
+            }
+            
+            diaryView.todoLabel.snp.makeConstraints {
+                $0.top.equalTo(diaryView.categoryLabel.snp.bottom).offset(10)
+                $0.leading.trailing.equalToSuperview().inset(30)
+            }
+            
+            diaryView.todoTextView.snp.makeConstraints {
+                $0.top.equalTo(diaryView.todoLabel.snp.bottom).offset(20)
+                $0.centerX.equalToSuperview().inset(30)
+                $0.width.equalTo(350)
+                $0.height.equalTo(300)
+            }
+            
+            diaryView.thankfulLabel.snp.makeConstraints {
+                $0.top.equalTo(diaryView.todoTextView.snp.bottom).offset(50)
+                $0.leading.trailing.equalToSuperview().inset(30)
+            }
+            
+            diaryView.thankfulTextView.snp.makeConstraints {
+                $0.top.equalTo(diaryView.thankfulLabel.snp.bottom).offset(20)
+                $0.centerX.equalToSuperview().inset(30)
+                $0.width.equalTo(350)
+                $0.height.equalTo(200)
+            }
+            
+            diaryView.bestLabel.snp.makeConstraints {
+                $0.top.equalTo(diaryView.thankfulTextView.snp.bottom).offset(50)
+                $0.leading.trailing.equalToSuperview().inset(30)
+            }
+            
+            diaryView.bestTextView.snp.makeConstraints {
+                $0.top.equalTo(diaryView.bestLabel.snp.bottom).offset(20)
+                $0.centerX.equalToSuperview().inset(30)
+                $0.width.equalTo(350)
+                $0.height.equalTo(200)
+            }
+            
+            diaryView.deleteButton.snp.makeConstraints {
+                $0.top.equalToSuperview().offset(10)
+                $0.leading.equalTo(diaryView.emojiLabel.snp.trailing).offset(50)
+                $0.size.equalTo(CGSize(width: 40, height: 40))
+            }
+            
+            diaryView.editButton.snp.makeConstraints {
+                $0.top.equalToSuperview().offset(10)
+                $0.leading.equalTo(diaryView.deleteButton.snp.trailing).offset(20)
+                $0.size.equalTo(CGSize(width: 40, height: 40))
+            }
+            
+            diaryView.backButton.snp.makeConstraints {
+                $0.top.equalToSuperview().offset(10)
+                $0.leading.equalToSuperview().offset(20)
+                $0.size.equalTo(CGSize(width: 44, height: 44))
+            }
+            
+            diaryView.saveButton.snp.makeConstraints {
+                $0.top.equalTo(diaryView.bestTextView.snp.bottom).offset(100)
+                $0.centerX.equalToSuperview()
+                $0.size.equalTo(CGSize(width: 350, height: 50))
+            }
+            
+            diaryView.contentView.snp.makeConstraints {
+                $0.edges.equalTo(diaryView.scrollView)
+                $0.width.equalTo(diaryView.scrollView)
+                $0.bottom.equalTo(diaryView.saveButton.snp.bottom).offset(50)
+            }
+            
+            diaryView.scrollView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        } else {
+            diaryView.addSubview(diaryView.scrollView)
+            diaryView.scrollView.addSubview(diaryView.contentView)
+            diaryView.contentView.addSubviews(
+                diaryView.emojiLabel,
+                diaryView.dateLabel,
+                diaryView.thankfulLabel,
+                diaryView.thankfulTextView,
+                diaryView.bestLabel,
+                diaryView.bestTextView,
+                diaryView.deleteButton,
+                diaryView.editButton,
+                diaryView.backButton,
+                diaryView.saveButton
+            )
+            
+            diaryView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            
+            diaryView.emojiLabel.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.centerX.equalToSuperview()
+            }
+            
+            diaryView.dateLabel.snp.makeConstraints {
+                $0.top.equalTo(diaryView.emojiLabel.snp.bottom).offset(40)
+                $0.leading.trailing.equalToSuperview().inset(30)
+            }
+            
+            diaryView.thankfulLabel.snp.makeConstraints {
+                $0.top.equalTo(diaryView.dateLabel.snp.bottom).offset(50)
+                $0.leading.trailing.equalToSuperview().inset(30)
+            }
+            
+            diaryView.thankfulTextView.snp.makeConstraints {
+                $0.top.equalTo(diaryView.thankfulLabel.snp.bottom).offset(20)
+                $0.centerX.equalToSuperview()
+                $0.width.equalTo(350)
+                $0.height.equalTo(200)
+            }
+            
+            diaryView.bestLabel.snp.makeConstraints {
+                $0.top.equalTo(diaryView.thankfulTextView.snp.bottom).offset(50)
+                $0.leading.trailing.equalToSuperview().inset(30)
+            }
+            
+            diaryView.bestTextView.snp.makeConstraints {
+                $0.top.equalTo(diaryView.bestLabel.snp.bottom).offset(20)
+                $0.centerX.equalToSuperview()
+                $0.width.equalTo(350)
+                $0.height.equalTo(200)
+            }
+            
+            diaryView.deleteButton.snp.makeConstraints {
+                $0.top.equalToSuperview().offset(10)
+                $0.leading.equalTo(diaryView.emojiLabel.snp.trailing).offset(50)
+                $0.size.equalTo(CGSize(width: 40, height: 40))
+            }
+            
+            diaryView.editButton.snp.makeConstraints {
+                $0.top.equalToSuperview().offset(10)
+                $0.leading.equalTo(diaryView.deleteButton.snp.trailing).offset(10)
+                $0.size.equalTo(CGSize(width: 40, height: 40))
+            }
+            
+            diaryView.backButton.snp.makeConstraints {
+                $0.top.equalToSuperview().offset(10)
+                $0.leading.equalToSuperview().offset(20)
+                $0.size.equalTo(CGSize(width: 44, height: 44))
+            }
+            
+            diaryView.saveButton.snp.makeConstraints {
+                $0.top.equalTo(diaryView.bestTextView.snp.bottom).offset(100)
+                $0.centerX.equalToSuperview()
+                $0.size.equalTo(CGSize(width: 350, height: 50))
+            }
+            
+            diaryView.contentView.snp.makeConstraints {
+                $0.edges.equalTo(diaryView.scrollView)
+                $0.width.equalTo(diaryView.scrollView)
+                $0.bottom.equalTo(diaryView.saveButton.snp.bottom).offset(50)
+            }
+            
+            diaryView.scrollView.snp.makeConstraints {
+                $0.edges.equalTo(view.safeAreaLayoutGuide)
+            }
         }
     }
     
     override func setAddTarget() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(emojiLabelTapped))
-        diaryView.emojiLabel.addGestureRecognizer(tapGesture)
-        
         diaryView.categoryButton.addTarget(self, action: #selector(categoryButtonTapped), for: .touchUpInside)
         
+        diaryView.deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        diaryView.editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        diaryView.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         diaryView.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
-    }
-    
-    func addEmoji() {
-        NetworkService.shared.emojiService.postEmoji(request: PostEmojiRequestModel(createAt: diaryView.dateLabel.text ?? "", todayEmoji: diaryView.emojiLabel.text ?? "")) { result in
-            switch result {
-            case .success(let EmojiResponseDTO):
-                print(EmojiResponseDTO)
-                DispatchQueue.main.async {
-                    self.diaryView.dateLabel.text = EmojiResponseDTO.data.createAt
-                    self.diaryView.emojiLabel.text = EmojiResponseDTO.data.todayEmoji
-                }
-            case .tokenExpired(_):
-                print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
-            case .requestErr:
-                print("요청 오류입니다")
-            case .decodedErr:
-                print("디코딩 오류입니다")
-            case .pathErr:
-                print("경로 오류입니다")
-            case .serverErr:
-                print("서버 오류입니다")
-            case .networkFail:
-                print("네트워크 오류입니다")
-            }
-        }
+        
+        updateViewMode()
     }
     
     func editEmoji(createAt: String) {
         NetworkService.shared.emojiService.putEmoji(createAt: createAt, request: PutEmojiRequestModel(todayEmoji: diaryView.emojiLabel.text ?? "")) { result in
             switch result {
             case .success(let EmojiResponseDTO):
-                print(EmojiResponseDTO)
+                print("EmojiResponseDTO:", EmojiResponseDTO)
                 DispatchQueue.main.async {
                     self.diaryView.emojiLabel.text = EmojiResponseDTO.data.todayEmoji
+                    print("Updated emoji label:", self.diaryView.emojiLabel.text ?? "nil")
+                    // 추가적인 로그를 통해 업데이트 여부 확인
+                    if self.diaryView.emojiLabel.text == EmojiResponseDTO.data.todayEmoji {
+                        print("이모지 라벨이 성공적으로 업데이트되었습니다.")
+                    } else {
+                        print("이모지 라벨 업데이트에 실패했습니다.")
+                    }
                 }
             case .tokenExpired(_):
                 print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
@@ -112,15 +317,34 @@ class DiaryViewController: BaseViewController {
         }
     }
     
-    func addReview() {
-        NetworkService.shared.reviewService.postReview(request: PostReviewRequestModel(createAt: diaryView.dateLabel.text ?? "2024-06-18", categoryId: 42, content: "")) { result in
+    func editReview(reviewId: Int) {
+        NetworkService.shared.reviewService.putReview(reviewId: reviewId, request: PutReviewRequestModel(content: "")) { result in
+            switch result {
+            case .success(let ReviewResponseDTO):
+                print(ReviewResponseDTO)
+            case .tokenExpired(_):
+                print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
+            case .requestErr:
+                print("요청 오류입니다")
+            case .decodedErr:
+                print("디코딩 오류입니다")
+            case .pathErr:
+                print("경로 오류입니다")
+            case .serverErr:
+                print("서버 오류입니다")
+            case .networkFail:
+                print("네트워크 오류입니다")
+            }
+        }
+    }
+    
+    func deleteReview(reviewId: Int) {
+        NetworkService.shared.reviewService.delReview(reviewId: reviewId) { result in
             switch result {
             case .success(let ReviewResponseDTO):
                 print(ReviewResponseDTO)
                 DispatchQueue.main.async {
-                    self.diaryView.todoTextView.text = ReviewResponseDTO.data.content
-                    self.diaryView.thankfulLabel.text = ReviewResponseDTO.data.content
-                    self.diaryView.bestTextView.text = ReviewResponseDTO.data.content
+                    self.handleReviewDeletionSuccess()
                 }
             case .tokenExpired(_):
                 print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
@@ -138,29 +362,8 @@ class DiaryViewController: BaseViewController {
         }
     }
     
-    func editReview(content: String) {
-        NetworkService.shared.reviewService.putReview(content: content, request: PutReviewRequestModel(content: "")) { result in
-            switch result {
-            case .success(let ReviewResponseDTO):
-                print(ReviewResponseDTO)
-            case .tokenExpired(_):
-                print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
-            case .requestErr:
-                print("요청 오류입니다")
-            case .decodedErr:
-                print("디코딩 오류입니다")
-            case .pathErr:
-                print("경로 오류입니다")
-            case .serverErr:
-                print("서버 오류입니다")
-            case .networkFail:
-                print("네트워크 오류입니다")
-            }
-        }
-    }
-    
-    func sendReview(requestModel: PostReviewRequestModel) {
-        NetworkService.shared.reviewService.postReview(request: requestModel) { result in
+    func sendReview(requestModel: PutReviewRequestModel) {
+        NetworkService.shared.reviewService.delReview(reviewId: 0) { result in
             switch result {
             case .success(let response):
                 print("PostReview 성공: \(response)")
@@ -189,19 +392,20 @@ class DiaryViewController: BaseViewController {
                 print("🥵🥵🥵🥵🥵🥵")
                 print(TodosResponseDTO)
                 DispatchQueue.main.async {
-                    // 각 TodoDateResDto의 content 배열을 꺼내와서 하나의 문자열로 조인
                     let allContents = TodosResponseDTO.data.todoDateResDtos.flatMap { $0.content }.joined(separator: ", ")
                     self.diaryView.todoLabel.text = allContents
                     
-                    // 각 카테고리 이름을 데이터 소스로 사용
                     self.dropDown.dataSource = TodosResponseDTO.data.todoDateResDtos.map { $0.categoryName }
+                    self.dropdowncount = self.dropDown.dataSource.count
+                    print("🤩🤩🤩🤩🤩🤩🤩🤩🤩 : \(self.dropdowncount)")
                     
-                    // 카테고리 이름과 그에 해당하는 콘텐츠를 딕셔너리로 만듦
                     self.categoryTodos = Dictionary(uniqueKeysWithValues: TodosResponseDTO.data.todoDateResDtos.map { ($0.categoryName, $0.content.joined(separator: ", ")) })
                     
                     self.setupDropDown()
                     print("😗😗😗😗😗")
                     print(self.categoryTag)
+                    
+                    self.setLayout()
                 }
             case .tokenExpired(_):
                 print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
@@ -218,7 +422,6 @@ class DiaryViewController: BaseViewController {
             }
         }
     }
-    
     
     func setUpDelegates() {
         diaryView.todoTextView.delegate = self
@@ -242,7 +445,7 @@ class DiaryViewController: BaseViewController {
     
     func setupDropDown() {
         dropDown.anchorView = diaryView.categoryButton
-        dropDown.bottomOffset = CGPoint(x: 0, y: diaryView.categoryButton.bounds.height + 15)
+        dropDown.bottomOffset = CGPoint(x: 0, y: diaryView.categoryButton.bounds.height + 60)
         dropDown.dataSource = Array(categoryTodos.keys)
         dropDown.backgroundColor = .white
         
@@ -263,38 +466,119 @@ class DiaryViewController: BaseViewController {
             self?.diaryView.todoLabel.text = self?.categoryTodos[item] ?? ""
             self?.diaryView.todoTextView.text = ""
             
-            print("현재 iten: \(item)")
+            print("현재 item: \(item)")
             print("현재 self?.diaryView.categoryLabel.text: \(self?.diaryView.categoryLabel.text)")
             if item != beforecategorylabel {
-                print("~~~")
                 self?.categoryTag.toggle()
                 beforecategorylabel = item
             }
+            
+            if self?.dropDown.dataSource.count ?? 0 > 0 && item == self?.dropDown.dataSource[0] && self?.postReviewGoal1Content != "" {
+                self?.diaryView.todoTextView.text = self?.postReviewGoal1Content
+            } else if self?.dropDown.dataSource.count ?? 0 > 1 && item == self?.dropDown.dataSource[1] && self?.postReviewGoal2Content != "" {
+                self?.diaryView.todoTextView.text = self?.postReviewGoal2Content
+            }
+        }
+    }
+
+    
+    private func updateViewMode() {
+        if isEditingMode {
+            if diaryView.emojiLabel.gestureRecognizers?.isEmpty ?? true {
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(emojiLabelTapped))
+                diaryView.emojiLabel.addGestureRecognizer(tapGesture)
+                diaryView.emojiLabel.isUserInteractionEnabled = true
+            }
+        } else {
+            if let gestureRecognizers = diaryView.emojiLabel.gestureRecognizers {
+                for recognizer in gestureRecognizers {
+                    diaryView.emojiLabel.removeGestureRecognizer(recognizer)
+                }
+                diaryView.emojiLabel.isUserInteractionEnabled = false
+            }
+        }
+        
+        diaryView.todoTextView.isUserInteractionEnabled = isEditingMode
+        diaryView.thankfulTextView.isUserInteractionEnabled = isEditingMode
+        diaryView.bestTextView.isUserInteractionEnabled = isEditingMode
+        
+        diaryView.backButton.isHidden = !isEditingMode
+        diaryView.saveButton.isHidden = !isEditingMode
+        diaryView.editButton.isHidden = isEditingMode
+        diaryView.deleteButton.isHidden = isEditingMode
+        
+        diaryView.todoTextView.isEditable = isEditingMode
+        diaryView.thankfulTextView.isEditable = isEditingMode
+        diaryView.bestTextView.isEditable = isEditingMode
+        
+        if isEditingMode {
+            diaryView.todoTextView.becomeFirstResponder()
+            diaryView.thankfulTextView.becomeFirstResponder()
+            diaryView.bestTextView.becomeFirstResponder()
+        } else {
+            diaryView.todoTextView.resignFirstResponder()
+            diaryView.thankfulTextView.resignFirstResponder()
+            diaryView.bestTextView.resignFirstResponder()
         }
     }
     
-    @objc func saveButtonTapped() {
-        print("save")
-        //        addEmoji()
-        editEmoji(createAt: "2024-06-18")
+    @objc func deleteButtonTapped() {
+        let alertController = UIAlertController(title: "삭제 확인", message: "정말 삭제할까요?", preferredStyle: .alert)
         
-        let goal1RequestModel = PostReviewRequestModel(createAt: "2024-06-18", categoryId: 1, content: postReviewGoal1Content)
-        let goal2RequestModel = PostReviewRequestModel(createAt: "2024-06-18", categoryId: 2, content: postReviewGoal2Content)
-        let thankfulRequestModel = PostReviewRequestModel(createAt: "2024-06-18", categoryId: 3, content: postReviewThankfulContent)
-        let bestRequestModel = PostReviewRequestModel(createAt: "2024-06-18", categoryId: 4, content: postReviewBestContent)
-        
-        if dropdowncount == 1 {
-            // If there's only one category, send only these three contents
-            sendReview(requestModel: goal1RequestModel)
-            sendReview(requestModel: thankfulRequestModel)
-            sendReview(requestModel: bestRequestModel)
-        } else {
-            // If there are more than one category, send all four contents
-            sendReview(requestModel: goal1RequestModel)
-            sendReview(requestModel: goal2RequestModel)
-            sendReview(requestModel: thankfulRequestModel)
-            sendReview(requestModel: bestRequestModel)
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+            self.deleteReview(reviewId: 11)
         }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(deleteAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    func handleReviewDeletionSuccess() {
+        print("리뷰가 성공적으로 삭제되었습니다.")
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func editButtonTapped() {
+        isEditingMode.toggle()
+        editEmoji(createAt: "2024-06-14")
+    }
+    
+    @objc func saveButtonTapped() {
+       print("save")
+       print("Current emoji before editEmoji:", diaryView.emojiLabel.text ?? "nil")
+       editEmoji(createAt: "2024-06-15")
+       
+       let goal1RequestModel = PutReviewRequestModel(content: postReviewGoal1Content)
+       let goal2RequestModel = PutReviewRequestModel(content: postReviewGoal2Content)
+       let thankfulRequestModel = PutReviewRequestModel(content: postReviewThankfulContent)
+       let bestRequestModel = PutReviewRequestModel(content: postReviewBestContent)
+       
+       if dropdowncount == 0 {
+           sendReview(requestModel: goal1RequestModel)
+           sendReview(requestModel: thankfulRequestModel)
+           sendReview(requestModel: bestRequestModel)
+       } else if dropdowncount == 1 {
+           sendReview(requestModel: goal1RequestModel)
+           sendReview(requestModel: thankfulRequestModel)
+           sendReview(requestModel: bestRequestModel)
+       } else {
+           sendReview(requestModel: goal1RequestModel)
+           sendReview(requestModel: goal2RequestModel)
+           sendReview(requestModel: thankfulRequestModel)
+           sendReview(requestModel: bestRequestModel)
+       }
+       
+       isEditingMode = false
+       diaryView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+   }
+
+    
+    @objc private func backButtonTapped() {
+        print("back")
+        isEditingMode = false
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
