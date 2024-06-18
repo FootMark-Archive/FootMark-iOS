@@ -11,13 +11,13 @@ import Foundation
 struct PutReviewDTO: Codable {
     let statusCode: Int
     let message: String
-    let data: PutReviewDataClass
+    var data: PutReviewDataClass
 }
 
 // MARK: - DataClass
 struct PutReviewDataClass: Codable {
     let reviewID, memberID, categoryID: Int
-    let content: String
+    var content: String
 
     enum CodingKeys: String, CodingKey {
         case reviewID = "reviewId"

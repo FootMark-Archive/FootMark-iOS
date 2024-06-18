@@ -100,13 +100,19 @@
 		C1B6A0562C0EFB7F003ECA62 /* MainContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B6A0552C0EFB7F003ECA62 /* MainContentViewController.swift */; };
 		C1B6A0582C0EFBC3003ECA62 /* SidebarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B6A0572C0EFBC3003ECA62 /* SidebarViewCell.swift */; };
 		C1B6A05C2C0EFBEA003ECA62 /* SidebarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B6A05B2C0EFBEA003ECA62 /* SidebarModel.swift */; };
+		C1DD50DB2C1C1D20001B7D62 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DD50DA2C1C1D20001B7D62 /* KeychainManager.swift */; };
+		C1DD50DD2C212A4C001B7D62 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DD50DC2C212A4C001B7D62 /* ReviewManager.swift */; };
+		C1DD50DF2C2154AC001B7D62 /* PostReviewGoal2RequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DD50DE2C2154AC001B7D62 /* PostReviewGoal2RequestModel.swift */; };
+		C1DD50E12C2154C9001B7D62 /* PostReviewThankfulRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DD50E02C2154C9001B7D62 /* PostReviewThankfulRequestModel.swift */; };
+		C1DD50E32C2154D5001B7D62 /* PostReviewBestRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DD50E22C2154D5001B7D62 /* PostReviewBestRequestModel.swift */; };
+		C1DD50E52C215D1F001B7D62 /* PostReviewRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DD50E42C215D1F001B7D62 /* PostReviewRequestModel.swift */; };
 		C1DF9F2A2C1AB9DE00924DD9 /* PutEmojiRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF9F292C1AB9DE00924DD9 /* PutEmojiRequestModel.swift */; };
 		C1DF9F2C2C1AB9F400924DD9 /* PutEmojiDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF9F2B2C1AB9F400924DD9 /* PutEmojiDTO.swift */; };
 		C1DF9F322C1AC18600924DD9 /* ReviewTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF9F312C1AC18600924DD9 /* ReviewTargetType.swift */; };
 		C1DF9F342C1AC19000924DD9 /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF9F332C1AC19000924DD9 /* ReviewService.swift */; };
 		C1DF9F382C1AC1C400924DD9 /* PostReviewDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF9F372C1AC1C400924DD9 /* PostReviewDTO.swift */; };
 		C1DF9F3A2C1AC1D400924DD9 /* PutReviewDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF9F392C1AC1D400924DD9 /* PutReviewDTO.swift */; };
-		C1DF9F3C2C1AC1E100924DD9 /* PostReviewRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF9F3B2C1AC1E100924DD9 /* PostReviewRequestModel.swift */; };
+		C1DF9F3C2C1AC1E100924DD9 /* PostReviewGoal1RequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF9F3B2C1AC1E100924DD9 /* PostReviewGoal1RequestModel.swift */; };
 		C1DF9F3E2C1AC1ED00924DD9 /* PutReviewRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF9F3D2C1AC1ED00924DD9 /* PutReviewRequestModel.swift */; };
 		C1DF9F412C1B471C00924DD9 /* CategoryTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF9F402C1B471B00924DD9 /* CategoryTargetType.swift */; };
 		C1DF9F432C1B497F00924DD9 /* CategoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DF9F422C1B497F00924DD9 /* CategoryService.swift */; };
@@ -195,13 +201,19 @@
 		C1B6A0552C0EFB7F003ECA62 /* MainContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentViewController.swift; sourceTree = "<group>"; };
 		C1B6A0572C0EFBC3003ECA62 /* SidebarViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewCell.swift; sourceTree = "<group>"; };
 		C1B6A05B2C0EFBEA003ECA62 /* SidebarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarModel.swift; sourceTree = "<group>"; };
+		C1DD50DA2C1C1D20001B7D62 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		C1DD50DC2C212A4C001B7D62 /* ReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManager.swift; sourceTree = "<group>"; };
+		C1DD50DE2C2154AC001B7D62 /* PostReviewGoal2RequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReviewGoal2RequestModel.swift; sourceTree = "<group>"; };
+		C1DD50E02C2154C9001B7D62 /* PostReviewThankfulRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReviewThankfulRequestModel.swift; sourceTree = "<group>"; };
+		C1DD50E22C2154D5001B7D62 /* PostReviewBestRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReviewBestRequestModel.swift; sourceTree = "<group>"; };
+		C1DD50E42C215D1F001B7D62 /* PostReviewRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReviewRequestModel.swift; sourceTree = "<group>"; };
 		C1DF9F292C1AB9DE00924DD9 /* PutEmojiRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmojiRequestModel.swift; sourceTree = "<group>"; };
 		C1DF9F2B2C1AB9F400924DD9 /* PutEmojiDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmojiDTO.swift; sourceTree = "<group>"; };
 		C1DF9F312C1AC18600924DD9 /* ReviewTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTargetType.swift; sourceTree = "<group>"; };
 		C1DF9F332C1AC19000924DD9 /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
 		C1DF9F372C1AC1C400924DD9 /* PostReviewDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReviewDTO.swift; sourceTree = "<group>"; };
 		C1DF9F392C1AC1D400924DD9 /* PutReviewDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutReviewDTO.swift; sourceTree = "<group>"; };
-		C1DF9F3B2C1AC1E100924DD9 /* PostReviewRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReviewRequestModel.swift; sourceTree = "<group>"; };
+		C1DF9F3B2C1AC1E100924DD9 /* PostReviewGoal1RequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReviewGoal1RequestModel.swift; sourceTree = "<group>"; };
 		C1DF9F3D2C1AC1ED00924DD9 /* PutReviewRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutReviewRequestModel.swift; sourceTree = "<group>"; };
 		C1DF9F402C1B471B00924DD9 /* CategoryTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTargetType.swift; sourceTree = "<group>"; };
 		C1DF9F422C1B497F00924DD9 /* CategoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryService.swift; sourceTree = "<group>"; };
@@ -594,6 +606,7 @@
 				9E74C3472C095612003152A7 /* MoyaLoggingPlugin.swift */,
 				9E74C3492C09562A003152A7 /* NetworkResults.swift */,
 				9E74C34B2C09564E003152A7 /* NetworkService.swift */,
+				C1DD50DA2C1C1D20001B7D62 /* KeychainManager.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -680,6 +693,7 @@
 			children = (
 				C1DF9F312C1AC18600924DD9 /* ReviewTargetType.swift */,
 				C1DF9F332C1AC19000924DD9 /* ReviewService.swift */,
+				C1DD50DC2C212A4C001B7D62 /* ReviewManager.swift */,
 			);
 			path = Review;
 			sourceTree = "<group>";
@@ -696,8 +710,12 @@
 		C1DF9F352C1AC19800924DD9 /* Request */ = {
 			isa = PBXGroup;
 			children = (
-				C1DF9F3B2C1AC1E100924DD9 /* PostReviewRequestModel.swift */,
+				C1DF9F3B2C1AC1E100924DD9 /* PostReviewGoal1RequestModel.swift */,
 				C1DF9F3D2C1AC1ED00924DD9 /* PutReviewRequestModel.swift */,
+				C1DD50DE2C2154AC001B7D62 /* PostReviewGoal2RequestModel.swift */,
+				C1DD50E02C2154C9001B7D62 /* PostReviewThankfulRequestModel.swift */,
+				C1DD50E22C2154D5001B7D62 /* PostReviewBestRequestModel.swift */,
+				C1DD50E42C215D1F001B7D62 /* PostReviewRequestModel.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -959,6 +977,7 @@
 				C1DF9F4C2C1B4A5000924DD9 /* GetTodosDTO.swift in Sources */,
 				9E3871682BAC1BCD007451F8 /* NSObject++.swift in Sources */,
 				C1B6A0522C0EFB33003ECA62 /* SidebarView.swift in Sources */,
+				C1DD50DD2C212A4C001B7D62 /* ReviewManager.swift in Sources */,
 				9E1B09432BDF9B08007AAB48 /* LoginRequestModel.swift in Sources */,
 				C1DF9F2C2C1AB9F400924DD9 /* PutEmojiDTO.swift in Sources */,
 				C1E74B9A2C0F6DF500D8E313 /* ProfileImageViewController.swift in Sources */,
@@ -977,7 +996,9 @@
 				C1DF9F3A2C1AC1D400924DD9 /* PutReviewDTO.swift in Sources */,
 				9E6451F92C15DC820026C29D /* EmojiTargetType.swift in Sources */,
 				9E386F9E2BAC0C06007451F8 /* AppDelegate.swift in Sources */,
+				C1DD50DF2C2154AC001B7D62 /* PostReviewGoal2RequestModel.swift in Sources */,
 				9E38716A2BAC1BCD007451F8 /* UIView++.swift in Sources */,
+				C1DD50E12C2154C9001B7D62 /* PostReviewThankfulRequestModel.swift in Sources */,
 				C1E74B982C0F6DBD00D8E313 /* ProfileView.swift in Sources */,
 				C1B6A0562C0EFB7F003ECA62 /* MainContentViewController.swift in Sources */,
 				9E74C3482C095612003152A7 /* MoyaLoggingPlugin.swift in Sources */,
@@ -989,17 +1010,20 @@
 				C1DF9F3E2C1AC1ED00924DD9 /* PutReviewRequestModel.swift in Sources */,
 				9E74C3442C0955D6003152A7 /* BaseService.swift in Sources */,
 				9E6451F72C15DBE80026C29D /* PostEmojiDTO.swift in Sources */,
+				C1DD50E32C2154D5001B7D62 /* PostReviewBestRequestModel.swift in Sources */,
 				C1DF9F2A2C1AB9DE00924DD9 /* PutEmojiRequestModel.swift in Sources */,
 				9E6451F52C15DBB20026C29D /* PostEmojiRequestModel.swift in Sources */,
 				9E3871452BAC1AA3007451F8 /* Font.swift in Sources */,
 				9E74C3532C095A68003152A7 /* LoginService.swift in Sources */,
 				9E3871632BAC1BCD007451F8 /* UIViewController++.swift in Sources */,
 				9E3871642BAC1BCD007451F8 /* UIImage++.swift in Sources */,
+				C1DD50DB2C1C1D20001B7D62 /* KeychainManager.swift in Sources */,
 				9E3871712BAC1BCD007451F8 /* BaseNavigationController.swift in Sources */,
 				C1DF9F412C1B471C00924DD9 /* CategoryTargetType.swift in Sources */,
 				9E74C34A2C09562A003152A7 /* NetworkResults.swift in Sources */,
 				9E6451FB2C15DD2B0026C29D /* EmojiService.swift in Sources */,
 				9E386FA02BAC0C06007451F8 /* SceneDelegate.swift in Sources */,
+				C1DD50E52C215D1F001B7D62 /* PostReviewRequestModel.swift in Sources */,
 				9E74C3462C0955EA003152A7 /* BaseTargetType.swift in Sources */,
 				C1482DF02BAFDAC8005177F7 /* DiaryView.swift in Sources */,
 				C1B6A0582C0EFBC3003ECA62 /* SidebarViewCell.swift in Sources */,
@@ -1009,7 +1033,7 @@
 				C1DF9F382C1AC1C400924DD9 /* PostReviewDTO.swift in Sources */,
 				C1B6A0542C0EFB49003ECA62 /* SidebarViewController.swift in Sources */,
 				9E3871672BAC1BCD007451F8 /* UIButton++.swift in Sources */,
-				C1DF9F3C2C1AC1E100924DD9 /* PostReviewRequestModel.swift in Sources */,
+				C1DF9F3C2C1AC1E100924DD9 /* PostReviewGoal1RequestModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,19 +6,21 @@
 //
 
 // Category에 포함된 TodosDTO
-// MARK: - GetTodosDTO
+import Foundation
+
+// MARK: - Welcome
 struct GetTodosDTO: Codable {
     let statusCode: Int
     let message: String
     let data: GetTodosDataClass
 }
 
-// MARK: - GetTodosDataClass
+// MARK: - DataClass
 struct GetTodosDataClass: Codable {
     let todoDateResDtos: [TodoDateResDto]
     let completionRate: Int
     let diaryExists: Bool
-    let todayEmoji: String
+    let todayEmoji: String?
 }
 
 // MARK: - TodoDateResDto

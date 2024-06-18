@@ -9,7 +9,7 @@ import Foundation
 import Moya
 
 enum CategoryTargetType {
-    case getTodos(createAt: String)
+    case getTodo(createAt: String)
 }
 
 extension CategoryTargetType: BaseTargetType {
@@ -19,29 +19,30 @@ extension CategoryTargetType: BaseTargetType {
     
     var path: String {
         switch self {
-        case .getTodos(let createAt):
+        case .getTodo(_):
             return "/category/todos"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getTodos(let createAt):
+        case .getTodo(_):
             return .get
         }
     }
     
     var task: Moya.Task {
         switch self {
-        case .getTodos(_):
-            return .requestPlain
+        case .getTodo(let createAt):
+            // Ensure the createAt is sent as a parameter if needed
+            return .requestParameters(parameters: ["createAt": createAt], encoding: URLEncoding.queryString)
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        case .getTodos(let createAt):
-            return ["Content-Type": "application/json", "createAt": createAt]
+        case .getTodo(_):
+            return ["Content-Type": "application/json"]
         }
     }
 }

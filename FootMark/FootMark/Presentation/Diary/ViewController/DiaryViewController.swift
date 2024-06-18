@@ -13,7 +13,15 @@ class DiaryViewController: BaseViewController {
     var diaryView = DiaryView()
     let dropDown = DropDown()
     
-    var categoryTodos: [String: String] = ["운동": "운동 더미 데이터", "공부": "공부 더미 데이터"]
+    var postReviewGoal1Content: String = ""
+    var postReviewGoal2Content: String = ""
+    var postReviewThankfulContent: String = ""
+    var postReviewBestContent: String = ""
+    
+    var categoryTodos: [String: String] = [:]
+    
+    var categoryTag: Bool = true
+    var dropdowncount = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,12 +32,20 @@ class DiaryViewController: BaseViewController {
         
         setUpDelegates()
         setUpClosures()
-        setupDropDown()
         
-        getTodos(createAt: diaryView.dateLabel.text ?? "2023-04-23")
-        diaryView.todoLabel.text = categoryTodos["운동"]
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let currentDate = formatter.string(from: Date())
+        diaryView.dateLabel.text = currentDate
+        
+        updateTodo()
+        
+        // Send data to server based on the number of categories
+        let categoriesCount = dropDown.dataSource.count
+        
+        dropdowncount = categoriesCount
     }
-
+    
     override func setLayout() {
         view.addSubviews(diaryView)
         
@@ -97,7 +113,7 @@ class DiaryViewController: BaseViewController {
     }
     
     func addReview() {
-        NetworkService.shared.reviewService.postReview(request: PostReviewRequestModel(createAt: diaryView.dateLabel.text ?? "2024-04-11", categoryId: 0, content: "")) { result in
+        NetworkService.shared.reviewService.postReview(request: PostReviewRequestModel(createAt: diaryView.dateLabel.text ?? "2024-06-18", categoryId: 42, content: "")) { result in
             switch result {
             case .success(let ReviewResponseDTO):
                 print(ReviewResponseDTO)
@@ -143,19 +159,49 @@ class DiaryViewController: BaseViewController {
         }
     }
     
-    func getTodos(createAt: String) {
-        print("getTodos 호출됨, createAt: \(createAt)")
-        NetworkService.shared.categoryService.getTodos(createAt: diaryView.dateLabel.text ?? "") { result in
+    func sendReview(requestModel: PostReviewRequestModel) {
+        NetworkService.shared.reviewService.postReview(request: requestModel) { result in
+            switch result {
+            case .success(let response):
+                print("PostReview 성공: \(response)")
+            case .tokenExpired(_):
+                print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
+            case .requestErr:
+                print("요청 오류입니다")
+            case .decodedErr:
+                print("디코딩 오류입니다")
+            case .pathErr:
+                print("경로 오류입니다")
+            case .serverErr:
+                print("서버 오류입니다")
+            case .networkFail:
+                print("네트워크 오류입니다")
+            }
+        }
+    }
+    
+    func updateTodo() {
+        guard let createAt = diaryView.dateLabel.text else { return }
+        print("getTodo 호출됨, createAt: \(createAt)")
+        NetworkService.shared.categoryService.getTodo(createAt: createAt) { result in
             switch result {
             case .success(let TodosResponseDTO):
+                print("🥵🥵🥵🥵🥵🥵")
                 print(TodosResponseDTO)
                 DispatchQueue.main.async {
-                    if let firstCategory = TodosResponseDTO.data.todoDateResDtos.first {
-                        self.diaryView.todoLabel.text = firstCategory.content.joined(separator: ", ")
-                        self.dropDown.dataSource = TodosResponseDTO.data.todoDateResDtos.map { $0.categoryName }
-                        // 카테고리별로 내용을 저장
-                        self.categoryTodos = Dictionary(uniqueKeysWithValues: TodosResponseDTO.data.todoDateResDtos.map { ($0.categoryName, $0.content.joined(separator: ", ")) })
-                    }
+                    // 각 TodoDateResDto의 content 배열을 꺼내와서 하나의 문자열로 조인
+                    let allContents = TodosResponseDTO.data.todoDateResDtos.flatMap { $0.content }.joined(separator: ", ")
+                    self.diaryView.todoLabel.text = allContents
+                    
+                    // 각 카테고리 이름을 데이터 소스로 사용
+                    self.dropDown.dataSource = TodosResponseDTO.data.todoDateResDtos.map { $0.categoryName }
+                    
+                    // 카테고리 이름과 그에 해당하는 콘텐츠를 딕셔너리로 만듦
+                    self.categoryTodos = Dictionary(uniqueKeysWithValues: TodosResponseDTO.data.todoDateResDtos.map { ($0.categoryName, $0.content.joined(separator: ", ")) })
+                    
+                    self.setupDropDown()
+                    print("😗😗😗😗😗")
+                    print(self.categoryTag)
                 }
             case .tokenExpired(_):
                 print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
@@ -173,6 +219,7 @@ class DiaryViewController: BaseViewController {
         }
     }
     
+    
     func setUpDelegates() {
         diaryView.todoTextView.delegate = self
         diaryView.thankfulTextView.delegate = self
@@ -184,7 +231,7 @@ class DiaryViewController: BaseViewController {
             self?.PresentEmojiPicker()
         }
         
-        let actionClosure: (UIAction) -> Void = { [weak self] action in
+        let _: (UIAction) -> Void = { [weak self] action in
             self?.diaryView.categoryLabel.text = action.title
         }
     }
@@ -195,8 +242,8 @@ class DiaryViewController: BaseViewController {
     
     func setupDropDown() {
         dropDown.anchorView = diaryView.categoryButton
-        dropDown.bottomOffset = CGPoint(x: 0, y: diaryView.categoryButton.bounds.height + 80)
-        dropDown.dataSource = ["운동", "공부"]
+        dropDown.bottomOffset = CGPoint(x: 0, y: diaryView.categoryButton.bounds.height + 15)
+        dropDown.dataSource = Array(categoryTodos.keys)
         dropDown.backgroundColor = .white
         
         dropDown.textFont = UIFont.pretendard(size: 18, weight: .regular)
@@ -205,18 +252,49 @@ class DiaryViewController: BaseViewController {
             diaryView.categoryButton.setTitle(firstCategory, for: .normal)
             diaryView.categoryLabel.text = firstCategory
             diaryView.todoLabel.text = categoryTodos[firstCategory] ?? ""
+            diaryView.todoTextView.text = ""
         }
+        
+        var beforecategorylabel = self.diaryView.categoryLabel.text
         
         dropDown.selectionAction = { [weak self] (index: Int, item: String) in
             self?.diaryView.categoryButton.setTitle(item, for: .normal)
             self?.diaryView.categoryLabel.text = item
             self?.diaryView.todoLabel.text = self?.categoryTodos[item] ?? ""
+            self?.diaryView.todoTextView.text = ""
+            
+            print("현재 iten: \(item)")
+            print("현재 self?.diaryView.categoryLabel.text: \(self?.diaryView.categoryLabel.text)")
+            if item != beforecategorylabel {
+                print("~~~")
+                self?.categoryTag.toggle()
+                beforecategorylabel = item
+            }
         }
     }
     
     @objc func saveButtonTapped() {
         print("save")
-        addEmoji()
+        //        addEmoji()
+        editEmoji(createAt: "2024-06-18")
+        
+        let goal1RequestModel = PostReviewRequestModel(createAt: "2024-06-18", categoryId: 1, content: postReviewGoal1Content)
+        let goal2RequestModel = PostReviewRequestModel(createAt: "2024-06-18", categoryId: 2, content: postReviewGoal2Content)
+        let thankfulRequestModel = PostReviewRequestModel(createAt: "2024-06-18", categoryId: 3, content: postReviewThankfulContent)
+        let bestRequestModel = PostReviewRequestModel(createAt: "2024-06-18", categoryId: 4, content: postReviewBestContent)
+        
+        if dropdowncount == 1 {
+            // If there's only one category, send only these three contents
+            sendReview(requestModel: goal1RequestModel)
+            sendReview(requestModel: thankfulRequestModel)
+            sendReview(requestModel: bestRequestModel)
+        } else {
+            // If there are more than one category, send all four contents
+            sendReview(requestModel: goal1RequestModel)
+            sendReview(requestModel: goal2RequestModel)
+            sendReview(requestModel: thankfulRequestModel)
+            sendReview(requestModel: bestRequestModel)
+        }
     }
 }
 
@@ -233,27 +311,42 @@ extension DiaryViewController: ElegantEmojiPickerDelegate {
     
     @objc func emojiLabelTapped() {
         diaryView.emojiPickerHandler?()
-        if let createAt = diaryView.dateLabel.text {
-            editEmoji(createAt: createAt)
-        }
     }
 }
 
 extension DiaryViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-            if text == "\n" {
-                textView.resignFirstResponder()
-                return false
-            }
-            return true
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
         }
+        return true
+    }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         print("텍스트 필드 편집 시작")
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        print("텍스트 필드 편집 종료")
-        addReview()
+        print("🤪")
+        
+        if textView == diaryView.todoTextView {
+            if categoryTag == true {
+                postReviewGoal1Content = diaryView.todoTextView.text
+                print("goal1content에 저장된 텍스트: \(self.postReviewGoal1Content)")
+            } else if categoryTag == false {
+                postReviewGoal2Content = diaryView.todoTextView.text
+                print("goal2content에 저장된 텍스트: \(self.postReviewGoal2Content)")
+            }
+        }
+        
+        if textView == diaryView.thankfulTextView {
+            postReviewThankfulContent = diaryView.thankfulTextView.text
+            print("postReviewThankfulContent에 저장된 텍스트: \(self.postReviewThankfulContent)")
+        }
+        
+        if textView == diaryView.bestTextView {
+            postReviewBestContent = diaryView.bestTextView.text
+        }
     }
 }

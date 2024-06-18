@@ -16,7 +16,7 @@ class KeychainManager {
     private init() {}
     
     func setAccessToken(_ token: String) {
-        keychain.set("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwNDIweXVuQGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJpYXQiOjE3MTg1MTk2ODUsImV4cCI6MTcxODUyMzI4NX0.bDWmMV0LCVwhX2PDu2CDuZtKMNWArOiNwOjLzKrs_jsdwnbf16f893RiwOuNJhRp2ImQFAn6kKQJxn5i9eJAUw", forKey: "accessToken")
+        keychain.set("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwNDIweXVuQGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJpYXQiOjE3MTg3MDAxMjgsImV4cCI6MTcxODcwMzcyOH0.3BFJ-LASzi4OCjiDmTx1Xhv6z2KU66i8lJ6Ev0gQMJjam9kuuaOHby_4KtUZXlH7iuW_KghX5k_Wx-g2-otN5g", forKey: "accessToken")
     }
     
     func getAccessToken() -> String? {

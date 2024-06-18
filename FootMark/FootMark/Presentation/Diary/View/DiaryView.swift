@@ -126,6 +126,16 @@ class DiaryView: BaseView {
         $0.layer.cornerRadius = 5.0
     }
     
+    let editButton = UIButton().then {
+        $0.setTitle("수정", for: .normal)
+        $0.setTitleColor(UIColor(resource: .white2), for: .normal)
+        $0.backgroundColor = UIColor(resource: .blue1)
+        $0.titleLabel?.font = UIFont.pretendard(size: 20, weight: .regular)
+        $0.layer.borderColor = UIColor.gray.cgColor
+        $0.layer.borderWidth = 1.0
+        $0.layer.cornerRadius = 5.0
+    }
+    
     override func setLayout() {
         addSubview(scrollView)
         
@@ -145,11 +155,19 @@ class DiaryView: BaseView {
         contentView.addSubview(bestLabel)
         contentView.addSubview(bestTextView)
         
+        contentView.addSubview(editButton)
         contentView.addSubview(saveButton)
         
         emojiLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(30)
             $0.centerX.equalToSuperview()
+        }
+        
+        editButton.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(50)
+            $0.leading.equalTo(self.emojiLabel.snp.trailing).offset(50)
+            $0.width.equalTo(50)
+            $0.height.equalTo(50)
         }
         
         dateLabel.snp.makeConstraints {

@@ -50,7 +50,8 @@ class LoginViewController: BaseViewController, ASAuthorizationControllerDelegate
                let keychain = KeychainSwift()
                keychain.set(loginDTO.data.accessToken, forKey: "accessToken")
                keychain.set(loginDTO.data.refreshToken, forKey: "refreshToken")
-               self.addEmoji()
+//               self.addEmoji()
+                self.navigationController?.pushViewController(DiaryViewController(), animated: true)
             case .tokenExpired(_):
                print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
                self.getNewAccessToken()
@@ -69,27 +70,27 @@ class LoginViewController: BaseViewController, ASAuthorizationControllerDelegate
    }
    
    // 아래 addEmoji 함수 참고 및 활용하세요!
-   func addEmoji() {
-      NetworkService.shared.emojiService.postEmoji(request: PostEmojiRequestModel(createAt: "2024-06-01", todayEmoji: "🤣")) { result in
-            switch result {
-            case .success(let EmojiResponseDTO):
-               print(EmojiResponseDTO)
-            case .tokenExpired(_):
-               print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
-               self.getNewAccessToken()
-            case .requestErr:
-               print("요청 오류입니다")
-            case .decodedErr:
-               print("디코딩 오류입니다")
-            case .pathErr:
-               print("경로 오류입니다")
-            case .serverErr:
-               print("서버 오류입니다")
-            case .networkFail:
-               print("네트워크 오류입니다")
-            }
-         }
-   }
+//   func addEmoji() {
+//      NetworkService.shared.emojiService.postEmoji(request: PostEmojiRequestModel(createAt: "2024-06-01", todayEmoji: "🤣")) { result in
+//            switch result {
+//            case .success(let EmojiResponseDTO):
+//               print(EmojiResponseDTO)
+//            case .tokenExpired(_):
+//               print("만료된 accessToken 입니다. \n재발급을 시도합니다.")
+//               self.getNewAccessToken()
+//            case .requestErr:
+//               print("요청 오류입니다")
+//            case .decodedErr:
+//               print("디코딩 오류입니다")
+//            case .pathErr:
+//               print("경로 오류입니다")
+//            case .serverErr:
+//               print("서버 오류입니다")
+//            case .networkFail:
+//               print("네트워크 오류입니다")
+//            }
+//         }
+//   }
    
    func getNewAccessToken() {
       guard let refreshToken = self.keychain.get("refreshToken") else {

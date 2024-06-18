@@ -24,7 +24,7 @@ extension EmojiTargetType: BaseTargetType {
             return "/emoji"
             
         case .editEmoji(let createAt, _):
-            return "/emoji/{createAt}"
+            return "/emoji/\(createAt)"
         }
     }
     
