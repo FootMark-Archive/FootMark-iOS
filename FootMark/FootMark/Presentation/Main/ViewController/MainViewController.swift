@@ -21,6 +21,7 @@ class MainViewController: BaseViewController {
    let dimmingView = UIView()
    let nickNameLabel = UILabel()
    let messageLabel = UILabel()
+   var newEmoji = ""
    
    let studyContainer = UIView()
    var percentLabel = UILabel()
@@ -122,7 +123,7 @@ class MainViewController: BaseViewController {
       //      self.navigationController?.navigationBar.isHidden = true
       self.navigationItem.hidesBackButton = true
       setAction()
-      setEvents()
+      setEvents(date: nil, flag: false)
       calendarView.appearance.eventDefaultColor = UIColor.green
       calendarView.appearance.eventSelectionColor = UIColor.green
       setupDimmingView()
@@ -135,6 +136,7 @@ class MainViewController: BaseViewController {
          self.calendarView.calendarWeekdayView.weekdayLabels[6].textColor = .red
       }
       getTodos()
+      updateView(count: UserDefaults.standard.integer(forKey: "categoryCount"))
    }
    
    override func setAddTarget() {
@@ -142,6 +144,9 @@ class MainViewController: BaseViewController {
       let tapGesture = UITapGestureRecognizer(target: self, action: #selector(emojiLabelTapped))
       emojiLabel.addGestureRecognizer(tapGesture)
       categoryPlusBtn.addTarget(self, action: #selector(didTapCategoryPlusBtn), for: .touchUpInside)
+      
+      checkboxView1.label.delegate = self
+      checkboxView1.label.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
    }
    
    override func setUI() {
@@ -182,12 +187,12 @@ class MainViewController: BaseViewController {
       
       goal1TitleTextLabel.do {
          $0.text = "운동"
-         $0.font = .pretendard(size: 25, weight: .bold)
+         $0.font = .pretendard(size: 22, weight: .bold)
          $0.textColor = .white
       }
       
       nickNameLabel.do {
-         let userdefaultsNickName = UserDefaults.standard.string(forKey: "userNickname")
+         let userdefaultsNickName = UserDefaults.standard.string(forKey: "nickName")
          $0.text = userdefaultsNickName
          $0.font = .pretendard(size: 25, weight: .black)
          $0.textColor = .white
@@ -208,35 +213,27 @@ class MainViewController: BaseViewController {
       }
       
       goal2Btn.do {
-         var config = UIButton.Configuration.filled()
-         config.image = UIImage(systemName: "plus.circle")
-         config.imagePlacement = .leading
-         config.imagePadding = 8
-         config.imageColorTransformer = UIConfigurationColorTransformer {_ in
-            return UIColor.blue
+         $0.setImage(UIImage(systemName: "trophy"), for: .normal)
+         $0.tintColor = .SWprimary2
+         $0.imageView?.snp.makeConstraints {
+            $0.edges.equalToSuperview()
          }
-         
-         $0.configuration = config
-         $0.clipsToBounds = true
-         $0.layer.cornerRadius = 12
       }
       
       goal2TitleTextLabel.do {
-         $0.text = "공부"
-         $0.font = .pretendard(size: 25, weight: .bold)
+         $0.text = "운동"
+         $0.font = .pretendard(size: 22, weight: .bold)
          $0.textColor = .white
       }
       
       checkboxView1.do {
          $0.isUserInteractionEnabled = true
-         $0.title = "수영, 산책, 달리기"
-         $0.isChecked = true
+         $0.isChecked = false
       }
       
       checkboxView2.do {
          $0.isUserInteractionEnabled = true
-         $0.title = "Swift, 알고리즘"
-         $0.isChecked = true
+         $0.isChecked = false
       }
       
       percentLabel.do {
@@ -330,106 +327,6 @@ class MainViewController: BaseViewController {
       noCategoryLabel.snp.makeConstraints {
          $0.center.equalToSuperview()
       }
-      //      else {
-      //         view.addSubviews(sidebarButton, nickNameLabel, messageLabel, emojiLabel, percentLabel, calContainer, goal1Btn, goal1TitleTextLabel, checkboxView1, studyContainer)
-      //         calContainer.addSubviews(calendarView, prevButton, nextButton)
-      //         studyContainer.addSubviews(goal2Btn, goal2TitleTextLabel, checkboxView2, categoryPlusBtn)
-      //
-      //         sidebarButton.snp.makeConstraints {
-      //            $0.top.equalToSuperview().offset(80)
-      //            $0.leading.equalToSuperview().inset(10)
-      //            $0.size.equalTo(50)
-      //         }
-      //
-      //         nickNameLabel.snp.makeConstraints {
-      //            $0.centerY.equalTo(sidebarButton)
-      //            $0.leading.equalTo(sidebarButton.snp.trailing).offset(10)
-      //         }
-      //
-      //         messageLabel.snp.makeConstraints {
-      //            $0.top.equalTo(nickNameLabel.snp.bottom).offset(10)
-      //            $0.leading.equalTo(nickNameLabel)
-      //         }
-      //
-      //         emojiLabel.snp.makeConstraints {
-      //            $0.centerY.equalTo(sidebarButton)
-      //            $0.centerX.equalTo(percentLabel)
-      //         }
-      //
-      //         percentLabel.snp.makeConstraints {
-      //            $0.trailing.equalToSuperview().inset(15)
-      //            $0.top.equalTo(emojiLabel.snp.bottom).offset(5)
-      //         }
-      //
-      //         calContainer.snp.makeConstraints {
-      //            $0.top.equalTo(sidebarButton.snp.bottom).offset(30)
-      //            $0.horizontalEdges.equalToSuperview().inset(20)
-      //            $0.height.equalTo(380)
-      //         }
-      //
-      //         calendarView.snp.makeConstraints {
-      //            $0.center.equalToSuperview()
-      //            $0.height.equalTo(330)
-      //            $0.width.equalTo(356)
-      //         }
-      //
-      //         prevButton.snp.makeConstraints {
-      //            $0.centerY.equalTo(calendarView.calendarHeaderView).multipliedBy(1.1)
-      //            $0.leading.equalTo(calendarView.calendarHeaderView.snp.leading).inset(80)
-      //         }
-      //
-      //         nextButton.snp.makeConstraints {
-      //            $0.centerY.equalTo(calendarView.calendarHeaderView).multipliedBy(1.1)
-      //            $0.trailing.equalTo(calendarView.calendarHeaderView.snp.trailing).inset(80)
-      //         }
-      //
-      //         goal1Btn.snp.makeConstraints {
-      //            $0.top.equalTo(calContainer.snp.bottom).offset(30)
-      //            $0.leading.equalToSuperview().offset(20)
-      //            $0.size.equalTo(24)
-      //         }
-      //
-      //         goal1TitleTextLabel.snp.makeConstraints {
-      //            $0.centerY.equalTo(goal1Btn)
-      //            $0.leading.equalTo(goal1Btn.snp.trailing).offset(15)
-      //         }
-      //
-      //         checkboxView1.snp.makeConstraints {
-      //            $0.top.equalTo(goal1Btn.snp.bottom).offset(10)
-      //            $0.leading.equalToSuperview().inset(50)
-      //            $0.height.equalTo(40)
-      //            $0.trailing.equalToSuperview()
-      //         }
-      //
-      //         studyContainer.snp.makeConstraints {
-      //            $0.horizontalEdges.equalToSuperview().inset(20)
-      //            $0.top.equalTo(checkboxView1.snp.bottom).offset(20)
-      //            $0.height.equalTo(200)
-      //         }
-      //
-      //         goal2Btn.snp.makeConstraints {
-      //            $0.top.equalToSuperview()
-      //            $0.leading.equalTo(goal1Btn)
-      //            $0.size.equalTo(24)
-      //         }
-      //
-      //         goal2TitleTextLabel.snp.makeConstraints {
-      //            $0.centerY.equalTo(goal2Btn)
-      //            $0.leading.equalTo(goal2Btn.snp.trailing).offset(15)
-      //         }
-      //
-      //         checkboxView2.snp.makeConstraints {
-      //            $0.top.equalTo(goal2Btn.snp.bottom).offset(10)
-      //            $0.leading.equalToSuperview().inset(30)
-      //            $0.height.equalTo(40)
-      //            $0.trailing.equalToSuperview()
-      //         }
-      //
-      //         categoryPlusBtn.snp.makeConstraints {
-      //            $0.top.trailing.equalToSuperview().inset(10)
-      //            $0.size.equalTo(30)
-      //         }
-      //      }
    }
    
    func getTodos(for date: String? = nil) {
@@ -451,6 +348,12 @@ class MainViewController: BaseViewController {
             switch result {
             case .success(let data):
                print(data)
+               if data.data.todayEmoji != nil {
+                  self.emojiLabel.text = data.data.todayEmoji
+               } else {
+                  self.emojiLabel.text = "🫥"
+               }
+               
                self.isalreadyLoadToday = true
             case .tokenExpired(_):
                print("refresh 토큰 만료입니다")
@@ -472,6 +375,11 @@ class MainViewController: BaseViewController {
             switch result {
             case .success(let data):
                print(data)
+               if data.data.todayEmoji != nil {
+                  self.emojiLabel.text = data.data.todayEmoji
+               } else {
+                  self.emojiLabel.text = "🫥"
+               }
                self.isalreadyLoadToday = true
             case .tokenExpired(_):
                print("refresh 토큰 만료입니다")
@@ -490,15 +398,18 @@ class MainViewController: BaseViewController {
       }
    }
    
-   func setEvents() {
+   func setEvents(date: String?, flag: Bool) {
       let dfMatter = DateFormatter()
       dfMatter.locale = Locale(identifier: "ko_KR")
       dfMatter.dateFormat = "yyyy-MM-dd"
       
-      // events
-//      let mayEvent12 = dfMatter.date(from: "2024-05-05")
-      
-      events = []
+      if flag == true {
+         let mayEvent = dfMatter.date(from: date ?? "")
+         
+         events = [mayEvent!]
+         
+         calendarView.reloadData() // 캘린더 다시 로드
+      }
    }
    
    func showSidebar() {
@@ -566,23 +477,29 @@ class MainViewController: BaseViewController {
    }
    
    @objc private func emojiLabelTapped() {
-      let alertVC = CategoryViewController()
-      alertVC.isModalInPresentation = false
-      present(alertVC, animated: true, completion: nil)
-      
-      //Diary 파트
-      //      if self.emojiLabel.text == "😂" {
-      //         let diaryVC = BFDiaryViewController()
-      //         self.navigationController?.pushViewController(diaryVC, animated: true)
-      //      } else if self.emojiLabel.text == "😎" {
-      //         let diaryVC = TTDiaryViewController()
-      //         self.navigationController?.pushViewController(diaryVC, animated: true)
-      //      }
+      let addDiaryVC = AddDiaryViewController()
+      let viewDiaryVC = DiaryViewController()
+      addDiaryVC.closure = {
+         self.setEvents(date: "2024-06-19", flag: true)
+         print("!!!!!!!!!")
+      }
+      if self.emojiLabel.text == "🫥" {
+         self.navigationController?.pushViewController(addDiaryVC, animated: true)
+      } else {
+         
+//         viewDiaryVC.diaryView.todoTextView.text = UserDefaults.standard.string(forKey: "목표1 내용")
+//         viewDiaryVC.diaryView.thankfulTextView.text = UserDefaults.standard.string(forKey: "감사한 일 내용")
+//         viewDiaryVC.diaryView.bestTextView.text = UserDefaults.standard.string(forKey: "가장 좋았던 일 내용")
+//         viewDiaryVC.diaryView.todo2Content =  UserDefaults.standard.string(forKey: "목표2 내용") ?? ""
+         
+         print("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥\n\(viewDiaryVC.diaryView.todoTextView.text)\n \(viewDiaryVC.diaryView.thankfulTextView.text)\n \(viewDiaryVC.diaryView.bestTextView.text)\n \(viewDiaryVC.diaryView.todo2Content)")
+         self.navigationController?.pushViewController(viewDiaryVC, animated: true)
+      }
       
    }
    
    func updateView(count: Int) {
-      if count == 0 {
+      if UserDefaults.standard.integer(forKey: "categoryCount") == 0 {
          view.addSubviews(sidebarButton, nickNameLabel, messageLabel, emojiLabel, percentLabel, calContainer, categoryContainer)
          calContainer.addSubviews(calendarView, prevButton, nextButton)
          categoryContainer.addSubviews(categoryLabel, categoryPlusBtn, noCategoryContainer)
@@ -665,15 +582,19 @@ class MainViewController: BaseViewController {
          noCategoryLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
          }
-      } else if count == 1 {
-         goal1TitleTextLabel.text = categoryName1
+      } else if count >= 1 {
+         goal1TitleTextLabel.text = UserDefaults.standard.string(forKey: "category1Name")
          
          view.addSubviews(sidebarButton, nickNameLabel, messageLabel, emojiLabel, percentLabel, calContainer, categoryContainer)
          
          calContainer.addSubviews(calendarView, prevButton, nextButton)
          categoryContainer.addSubviews(categoryLabel, categoryPlusBtn, noCategoryContainer)
          
-         noCategoryContainer.addSubviews(emojiLabel2, noCategoryLabel)
+         emojiLabel2.removeFromSuperview()
+         noCategoryLabel.removeFromSuperview()
+         
+         
+         noCategoryContainer.addSubviews(goal1Btn, goal1TitleTextLabel, checkboxView1)
          
          sidebarButton.snp.makeConstraints {
             $0.top.equalToSuperview().offset(80)
@@ -744,26 +665,60 @@ class MainViewController: BaseViewController {
             $0.horizontalEdges.bottom.equalToSuperview().inset(10)
          }
          
-         emojiLabel2.snp.removeConstraints()
-         noCategoryLabel.snp.removeConstraints()
          
-         
-         noCategoryContainer.addSubviews(goal1Btn, goal1TitleTextLabel)
          goal1Btn.snp.makeConstraints {
             $0.top.equalToSuperview().offset(20)
-            $0.size.equalTo(40)
+            $0.leading.equalToSuperview()
+            $0.size.equalTo(30)
          }
+         
          goal1TitleTextLabel.snp.makeConstraints {
             $0.leading.equalTo(goal1Btn.snp.trailing).offset(5)
             $0.centerY.equalTo(goal1Btn)
          }
          
+         checkboxView1.snp.makeConstraints {
+            $0.top.equalTo(goal1TitleTextLabel.snp.bottom).offset(10)
+            $0.leading.equalTo(goal1TitleTextLabel.snp.leading)
+            $0.height.equalTo(40)
+            $0.trailing.equalToSuperview()
+         }
+         
+         if count == 2 {
+            goal2TitleTextLabel.text = UserDefaults.standard.string(forKey: "category2Name")
+            
+            noCategoryContainer.addSubviews(goal2Btn, goal2TitleTextLabel, checkboxView2)
+            
+            goal2Btn.snp.makeConstraints {
+               $0.top.equalTo(checkboxView1.snp.bottom).offset(10)
+               $0.leading.equalToSuperview()
+               $0.size.equalTo(30)
+            }
+            
+            goal2TitleTextLabel.snp.makeConstraints {
+               $0.leading.equalTo(goal2Btn.snp.trailing).offset(5)
+               $0.centerY.equalTo(goal2Btn)
+            }
+            
+            checkboxView2.snp.makeConstraints {
+               $0.top.equalTo(goal2TitleTextLabel.snp.bottom).offset(10)
+               $0.leading.equalTo(goal2TitleTextLabel.snp.leading)
+               $0.height.equalTo(40)
+               $0.trailing.equalToSuperview()
+            }
+         }
       }
    }
    
    @objc private func didTapCategoryPlusBtn() {
       let alertVC = CategoryViewController()
       alertVC.isModalInPresentation = false
+      if UserDefaults.standard.integer(forKey: "categoryCount") == 1 {
+         alertVC.reloadView1(categoryCount: 1, categoryName: UserDefaults.standard.string(forKey: "category1Name") ?? "")
+      } else if UserDefaults.standard.integer(forKey: "categoryCount") == 2 {
+         alertVC.reloadView1(categoryCount: 1, categoryName: UserDefaults.standard.string(forKey: "category1Name") ?? "")
+         alertVC.reloadView2(categoryCount: 2, categoryName: UserDefaults.standard.string(forKey: "category2Name") ?? "")
+      }
       alertVC.mainVC = self // self를 전달합니다.
       alertVC.categoryClosure = {
          self.updateView(count: self.allCategoryCount)
@@ -851,35 +806,58 @@ extension MainViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalend
       dateFormatter.dateFormat = "yyyy-MM-dd"
       let day = dateFormatter.string(from: date)
       
-      getTodos(for: day) // 선택된 날짜에 대해 getTodos 호출
+      getTodos(for: day)
       
-      DispatchQueue.main.async {
-         if day == "2024-06-05" {
-            self.emojiLabel.text = "🥳"
-            self.percentLabel.text = "100%"
-            self.studyContainer.isHidden = true
-            self.checkboxView1.title = "유산소 5km"
-            self.goal1Btn.isHidden = false
-            self.goal1TitleTextLabel.isHidden = false
-            self.checkboxView1.isHidden = false
-         } else if day == "2024-05-15" {
-            self.emojiLabel.text = "🥸"
-            self.percentLabel.text = "100%"
-            self.studyContainer.isHidden = true
-            self.checkboxView1.title = "웨이트 1시간"
-            self.goal1Btn.isHidden = false
-            self.goal1TitleTextLabel.isHidden = false
-            self.checkboxView1.isHidden = false
-         } else {
-            self.emojiLabel.text = "🫥"
-            self.percentLabel.text = "0%"
-            self.studyContainer.isHidden = true
-            self.goal1Btn.isHidden = true
-            self.goal1TitleTextLabel.isHidden = true
-            self.checkboxView1.isHidden = true
-         }
-      }
       
    }
    
+}
+
+extension MainViewController: UITextFieldDelegate {
+   
+   // 확인 or return 버튼으로 키보드 내리기
+   internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+      textField.resignFirstResponder()
+      return true
+   }
+   
+   //MARK: - @objc func
+   
+   @objc func textFieldDidChange(_ textField: UITextField) {
+      DispatchQueue.main.async { [weak self] in
+         guard let self = self else { return }
+         if textField.text?.count == 0 {
+            print("첫 번째 목표 todo 미입력")
+         } else {
+            print("첫 번째 목표 todo 입력 완료")
+         }
+      }
+   }
+   
+   @objc override func dismissKeyboard() {
+      view.endEditing(true)
+   }
+   
+   @objc func keyboardWillShow(notification: NSNotification) {
+       guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+           return
+       }
+       
+       UIView.animate(withDuration: 0.3) {
+           self.view.layoutIfNeeded()
+       }
+   }
+   
+   @objc func keyboardWillHide(notification: NSNotification) {
+      UIView.animate(withDuration: 0.3) {
+         self.view.layoutIfNeeded()
+      }
+   }
+   
+   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+      let currentText = textField.text ?? ""
+      let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
+      
+      return true
+   }
 }
