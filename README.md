@@ -1,6 +1,45 @@
 # FootMark-iOS
 발자국을 따라 떠올려 보세요
 
+## iOS Developers
+
+| <img src="https://avatars.githubusercontent.com/u/114901417?s=400&u=8ca676d247090a0114ef01f6ad113014241f8a6a&v=4" width="200"> | <img src="https://avatars.githubusercontent.com/u/90887498?v=4" width="200"> |
+| :----------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------: |
+|                                                             박신영                                                             |                                    윤성은                                    |
+
+### 개발 환경
+
+<p align="left">
+<img src ="https://img.shields.io/badge/Swift-5.9.2-ff69b4">
+<img src ="https://img.shields.io/badge/Xcode-15.3-blue">
+<img src ="https://img.shields.io/badge/iOS-17.0-orange">
+<img src ="https://img.shields.io/badge/SPM-0.9.0-green">
+<br>
+
+### 라이브러리
+
+| 라이브러리(Library) | 버전(Version) | 사용목적(Purpose) |
+| :------------------ | :------------ | :---------------- |
+| SnapKit             | 5.7.1         | Layout            |
+| Then                | 3.0.0         | Layout            |
+| ElegantEmojiPicker  | main          | 이모지            |
+| FSCalendar          | main          | 캘린더            |
+| Moya                | 15.0.3        | 서버 통신         |
+| DropDown            | master        | 드롭 다운         |
+| KeychainSwift       | 24.0.0        | 보안 관련         |
+| Firebase            | 10.27.0       | 소셜 로그인       |
+| GoogleSignIn        | 7.1.0         | 구글 소셜 로그인  |
+| KingFisher          | 7.12.0        | 이미지 캐싱       |
+| LookinServer        | 1.2.8         | 뷰 계층 확인      |
+
+<br>
+
+## 빌드 방법
+
+- clone 이후 Xcode에서 시뮬레이터를 설정하고, cmd + r 키를 누르면 자동으로 실행됩니다.
+- 이후 Apple 혹은 Google 소셜 아이디를 이용한 로그인을 진행하시면 어플을 이용하실 수 있습니다.
+
+
 <br>
 
 ## Code Convention
